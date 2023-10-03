@@ -3,9 +3,9 @@ __commonJS,
 __toESM,
 require_jsx_dev_runtime,
 require_react
-} from "./chunk-ba72fa687bba2094.js";
+} from "./chunk-63abc4cc02303101.js";
 
-// pages/testes/scheduler/cjs/scheduler.development.js
+// pagesmodules/scheduler/cjs/scheduler.development.js
 var require_scheduler_development = __commonJS((exports) => {
   if (true) {
     (function() {
@@ -451,7 +451,7 @@ var require_scheduler_development = __commonJS((exports) => {
   }
 });
 
-// pages/testes/scheduler/cjs/sche
+// pagesmodules/scheduler/cjs/sche
 var require_scheduler = __commonJS((exports, module) => {
   var scheduler_development = __toESM(require_scheduler_development(), 1);
   if (false) {
@@ -460,7 +460,7 @@ var require_scheduler = __commonJS((exports, module) => {
   }
 });
 
-// pages/testes/scheduler/cjs/scheduler.development.js
+// pagesmodules/scheduler/cjs/scheduler.development.js
 var require_react_dom_development = __commonJS((exports) => {
   var React = __toESM(require_react(), 1);
   var Scheduler = __toESM(require_scheduler(), 1);
@@ -20770,7 +20770,7 @@ var require_react_dom_development = __commonJS((exports) => {
   }
 });
 
-// pages/testes/scheduler/cjs/sche
+// pagesmodules/scheduler/cjs/sche
 var require_react_dom = __commonJS((exports, module) => {
   var react_dom_development = __toESM(require_react_dom_development(), 1);
   if (false) {
@@ -20779,7 +20779,7 @@ var require_react_dom = __commonJS((exports, module) => {
   }
 });
 
-// pages/testes/scheduler/cjs/sched
+// pagesmodules/scheduler/cjs/sched
 var require_client = __commonJS((exports) => {
   var m = __toESM(require_react_dom(), 1);
   if (false) {
@@ -20805,7 +20805,7 @@ var require_client = __commonJS((exports) => {
   var i;
 });
 
-// pages/testes/sc
+// pagesmodules/sc
 var client = __toESM(require_client(), 1);
 var jsx_dev_runtime = __toESM(require_jsx_dev_runtime(), 1);
 var { default: App } = await import(globalThis.PATH_TO_PAGE);

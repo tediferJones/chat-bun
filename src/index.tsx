@@ -9,13 +9,11 @@ import { renderToReadableStream } from 'react-dom/server';
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
 
+// Setup server
 const srcRouter = new Bun.FileSystemRouter({
   dir: rootPath + 'src/pages',
   style: 'nextjs',
 })
-// console.log(srcRouter)
-// console.log(srcRouter.routes)
-// console.log(Object.values(srcRouter.routes))
 
 // Generate css file from tailwind classes
 Bun.spawn(['npx', 'tailwindcss', '-i', 'src/input.css', '-o', 'public/output.css'], {
@@ -36,14 +34,13 @@ const buildRouter = new Bun.FileSystemRouter({
   dir: rootPath + 'build/pages',
   style: 'nextjs',
 })
-// console.log(buildRouter)
 
 const apiRouter = new Bun.FileSystemRouter({
   dir: rootPath + 'src/apiRoutes',
   style: 'nextjs',
 })
-// console.log(srcRouter)
 
+// Import all pages so we dont have to dynamically import them on demand
 const pages: { [key: string]: any } = {};
 Object.keys(srcRouter.routes).forEach(async (path) => {
   pages[path] = await import(srcRouter.routes[path]);
@@ -53,6 +50,9 @@ Object.keys(apiRouter.routes).forEach(async (path) => {
   apiRoutes[path] = await import(apiRouter.routes[path]);
 })
 
+// We should setup the websocket server somewhere around here
+
+// Run server to serve HTML to user
 const server = Bun.serve({
   port: 3000,
   async fetch(req) {
@@ -61,12 +61,13 @@ const server = Bun.serve({
     // const srcMatch = srcRouter.match(req)
     // console.log(pages)
     console.log(req.url)
+    console.log(builtMatch)
 
     if (builtMatch && builtMatch.pathname !== builtMatch.name + '.js') {
     // if (builtMatch) {
       console.log('requesting page')
-      console.log("MATCHED PAGE")
-      console.log(builtMatch)
+      // console.log("MATCHED PAGE")
+      // console.log(builtMatch)
       // const stream = await renderToReadableStream(<PageToRender.default />, {
       // const stream = await renderToReadableStream(<pages[builtMatch.name] />, {
       const stream = await renderToReadableStream(pages[builtMatch.name].default({ params: builtMatch.params }), {
