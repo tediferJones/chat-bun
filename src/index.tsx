@@ -15,6 +15,11 @@ const srcRouter = new Bun.FileSystemRouter({
   style: 'nextjs',
 })
 
+// Delete old build dir
+Bun.spawnSync(['rm', '-r', 'build/'], {
+  cwd: rootPath,
+})
+
 // Generate css file from tailwind classes
 Bun.spawn(['npx', 'tailwindcss', '-i', 'src/input.css', '-o', 'public/output.css'], {
   cwd: rootPath,
@@ -49,8 +54,15 @@ const apiRoutes: { [key: string]: any } = {};
 Object.keys(apiRouter.routes).forEach(async (path) => {
   apiRoutes[path] = await import(apiRouter.routes[path]);
 })
+// console.log(apiRouter)
+// console.log(apiRoutes)
+// console.log('############')
+// console.log(srcRouter)
+// console.log(buildRouter)
+// console.log(pages)
 
 // We should setup the websocket server somewhere around here
+const servers: { [key: string]: any } = {};
 
 // Run server to serve HTML to user
 const server = Bun.serve({
@@ -60,12 +72,15 @@ const server = Bun.serve({
     const apiMatch = apiRouter.match(req)
     // const srcMatch = srcRouter.match(req)
     // console.log(pages)
-    console.log(req.url)
-    console.log(builtMatch)
+    // console.log(req.url)
+    console.log(req.method + ', ' + new URL(req.url).pathname)
+    // console.log(builtMatch)
+    // console.log(apiRoutes)
+    // console.log(pages)
 
     if (builtMatch && builtMatch.pathname !== builtMatch.name + '.js') {
     // if (builtMatch) {
-      console.log('requesting page')
+      console.log('RETURN PAGE')
       // console.log("MATCHED PAGE")
       // console.log(builtMatch)
       // const stream = await renderToReadableStream(<PageToRender.default />, {
@@ -77,13 +92,14 @@ const server = Bun.serve({
 
       return new Response(stream);
     } else if (apiMatch) {
+      console.log('RETURN API RESPONSE')
       return apiRoutes[apiMatch.name][req.method](req)
     } else {
-      console.log(`REQUESTING FILE`)
+      console.log(`RETURN FILE`)
 
       let filePath = new URL(req.url).pathname;
-      console.log('FILE PATH')
-      console.log(filePath)
+      // console.log('FILE PATH')
+      // console.log(filePath)
       // Maybe rename to 'res'
       let file;
 

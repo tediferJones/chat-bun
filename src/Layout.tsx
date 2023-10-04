@@ -1,3 +1,4 @@
+import Navbar from './components/Navbar';
 // import React from 'react';
 
 // <link rel="manifest" href="/manifest.json" />
@@ -21,11 +22,6 @@ export default function Layout(props: { title: string; children: React.ReactNode
         <link rel="stylesheet" href="/output.css" />
       </head>
       <body>
-        <div className='flex justify-around items-center bg-blue-400 p-4'>
-          <h1 className='bg-red-900 p-4'>React SSR w/ Bun</h1>
-          <a href='/'>home</a>
-          <a href='/example'>example page</a>
-        </div>
         <div className="App" role="main">
             {props.children}
         </div>

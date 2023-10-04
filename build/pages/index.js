@@ -43,47 +43,44 @@ function Layout(props) {
         ]
       }, undefined, true, undefined, this),
       jsx_dev_runtime.jsxDEV("body", {
-        children: [
-          jsx_dev_runtime.jsxDEV("div", {
-            className: "flex justify-around items-center bg-blue-400 p-4",
-            children: [
-              jsx_dev_runtime.jsxDEV("h1", {
-                className: "bg-red-900 p-4",
-                children: "React SSR w/ Bun"
-              }, undefined, false, undefined, this),
-              jsx_dev_runtime.jsxDEV("a", {
-                href: "/",
-                children: "home"
-              }, undefined, false, undefined, this),
-              jsx_dev_runtime.jsxDEV("a", {
-                href: "/example",
-                children: "example page"
-              }, undefined, false, undefined, this)
-            ]
-          }, undefined, true, undefined, this),
-          jsx_dev_runtime.jsxDEV("div", {
-            className: "App",
-            role: "main",
-            children: props.children
-          }, undefined, false, undefined, this)
-        ]
-      }, undefined, true, undefined, this)
+        children: jsx_dev_runtime.jsxDEV("div", {
+          className: "App",
+          role: "main",
+          children: props.children
+        }, undefined, false, undefined, this)
+      }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
 }
 
-// pagesmodules/scheduler/cjs
+// pagesmodules/scheduler/cjs/sched
 var jsx_dev_runtime2 = __toESM(require_jsx_dev_runtime(), 1);
-function Greeter({ username }) {
+function NewConnection(props) {
   return jsx_dev_runtime2.jsxDEV("div", {
-    className: "flex justify-center p-8 m-2 bg-purple-400 text-2xl text-white font-bold",
-    children: jsx_dev_runtime2.jsxDEV("h1", {
-      children: [
-        "Hello, ",
-        username
-      ]
-    }, undefined, true, undefined, this)
-  }, undefined, false, undefined, this);
+    children: [
+      jsx_dev_runtime2.jsxDEV("label", {
+        children: "Username"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime2.jsxDEV("input", {
+        className: "border-gray-500 border-4",
+        type: "text"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime2.jsxDEV("label", {
+        children: "Servername"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime2.jsxDEV("input", {
+        className: "border-gray-500 border-4",
+        type: "number"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime2.jsxDEV("button", {
+        className: "bg-blue-500 p-4",
+        onClick: (e) => {
+          console.log(e);
+        },
+        children: "Connect"
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
 }
 
 // pagesmodules/schedu
@@ -93,11 +90,9 @@ function index() {
     title: "Welcome",
     children: [
       jsx_dev_runtime3.jsxDEV("h1", {
-        children: "THE REAL HOME PAGE"
+        children: "Chat, but with bun"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime3.jsxDEV(Greeter, {
-        username: "TIMMY"
-      }, undefined, false, undefined, this)
+      jsx_dev_runtime3.jsxDEV(NewConnection, {}, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
 }
