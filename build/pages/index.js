@@ -56,6 +56,11 @@ function Layout(props) {
 // pagesmodules/scheduler/cjs/sched
 var jsx_dev_runtime2 = __toESM(require_jsx_dev_runtime(), 1);
 function NewConnection(props) {
+  function clickHandler(e) {
+    console.log(e);
+    const clientWebSocket = new WebSocket(`ws://localhost:8000`);
+    console.log(clientWebSocket);
+  }
   return jsx_dev_runtime2.jsxDEV("div", {
     children: [
       jsx_dev_runtime2.jsxDEV("label", {
@@ -74,9 +79,7 @@ function NewConnection(props) {
       }, undefined, false, undefined, this),
       jsx_dev_runtime2.jsxDEV("button", {
         className: "bg-blue-500 p-4",
-        onClick: (e) => {
-          console.log(e);
-        },
+        onClick: clickHandler,
         children: "Connect"
       }, undefined, false, undefined, this)
     ]

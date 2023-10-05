@@ -63,6 +63,25 @@ Object.keys(apiRouter.routes).forEach(async (path) => {
 
 // We should setup the websocket server somewhere around here
 const servers: { [key: string]: any } = {};
+const webSocket = Bun.serve({
+  port: 8000,
+  fetch(req, server) {
+    // upgrade the request to a WebSocket
+    if (server.upgrade(req)) {
+      return; // do not return a Response
+    }
+    return new Response("Upgrade failed :(", { status: 500 });
+  },
+  websocket: {
+    message(ws, message) {
+      console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
+      console.log(ws, message)
+    },
+    open(ws) {
+      console.log('WEBSOCKET HAS BEEN OPENED')
+    }
+  }, // handlers
+});
 
 // Run server to serve HTML to user
 const server = Bun.serve({
@@ -93,6 +112,7 @@ const server = Bun.serve({
       return new Response(stream);
     } else if (apiMatch) {
       console.log('RETURN API RESPONSE')
+      console.log(apiMatch)
       return apiRoutes[apiMatch.name][req.method](req)
     } else {
       console.log(`RETURN FILE`)
