@@ -112,7 +112,7 @@ const server = Bun.serve({
       return new Response(stream);
     } else if (apiMatch) {
       console.log('RETURN API RESPONSE')
-      console.log(apiMatch)
+      // console.log(apiMatch)
       return apiRoutes[apiMatch.name][req.method](req)
     } else {
       console.log(`RETURN FILE`)
