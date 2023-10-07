@@ -5,6 +5,11 @@ import { renderToReadableStream } from 'react-dom/server';
 // Consider using tsconfig path aliases, make on for @root = './', @components = './src/components'
 //
 // DYNAMIC PAGES CANT LOAD PROPS ON CLIENT
+//
+// How do we allow users to login?
+// We can get username/password on the server, and hash/compare the password
+// How do we keep user logged in?
+// When the user logs in, return a cookie, then just verify the cookie when an authotized action takes place (every message sent)
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
@@ -62,26 +67,49 @@ Object.keys(apiRouter.routes).forEach(async (path) => {
 // console.log(pages)
 
 // We should setup the websocket server somewhere around here
-const servers: { [key: string]: any } = {};
-const webSocket = Bun.serve({
-  port: 8000,
-  fetch(req, server) {
-    // upgrade the request to a WebSocket
-    if (server.upgrade(req)) {
-      return; // do not return a Response
-    }
-    return new Response("Upgrade failed :(", { status: 500 });
-  },
-  websocket: {
-    message(ws, message) {
-      console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
-      console.log(ws, message)
-    },
-    open(ws) {
-      console.log('WEBSOCKET HAS BEEN OPENED')
-    }
-  }, // handlers
-});
+const servers: { [key: string]: any } = {
+  servers: [],
+  newServer: (port: number, servername: string) => {
+    return Bun.serve({
+      port,
+      fetch: (req, server) => {
+        if (server.upgrade(req)) {
+          return;
+        } else {
+          return new Response("Upgrade failed :(", { status: 500 });
+        }
+      },
+      websocket: {
+        message(ws, message) {
+          console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
+          console.log(ws, message)
+        },
+        open(ws) {
+          console.log('WEBSOCKET HAS BEEN OPENED')
+        }
+      }
+    })
+  }
+};
+// const webSocket = Bun.serve({
+//   port: 8000,
+//   fetch(req, server) {
+//     // upgrade the request to a WebSocket
+//     if (server.upgrade(req)) {
+//       return; // do not return a Response
+//     }
+//     return new Response("Upgrade failed :(", { status: 500 });
+//   },
+//   websocket: {
+//     message(ws, message) {
+//       console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
+//       console.log(ws, message)
+//     },
+//     open(ws) {
+//       console.log('WEBSOCKET HAS BEEN OPENED')
+//     }
+//   }, // handlers
+// });
 
 // Run server to serve HTML to user
 const server = Bun.serve({
@@ -113,7 +141,7 @@ const server = Bun.serve({
     } else if (apiMatch) {
       console.log('RETURN API RESPONSE')
       // console.log(apiMatch)
-      return apiRoutes[apiMatch.name][req.method](req)
+      return apiRoutes[apiMatch.name][req.method](req, servers)
     } else {
       console.log(`RETURN FILE`)
 
