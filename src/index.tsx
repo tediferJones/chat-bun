@@ -141,6 +141,10 @@ const server = Bun.serve({
     } else if (apiMatch) {
       console.log('RETURN API RESPONSE')
       // console.log(apiMatch)
+
+      // console.log(apiMatch.name)
+      // console.log(req.method)
+
       return apiRoutes[apiMatch.name][req.method](req, servers)
     } else {
       console.log(`RETURN FILE`)

@@ -534,6 +534,10 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.table {
+  display: table;
+}
+
 .border-4 {
   border-width: 4px;
 }
