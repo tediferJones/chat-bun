@@ -12,6 +12,7 @@ import { renderToReadableStream } from 'react-dom/server';
 // When the user logs in, return a cookie, then just verify the cookie when an authotized action takes place (every message sent)
 //
 // How do we make sure the api will only take requests from logged in users
+// Working on a version with the api/websocket server seperate from front-end/auth
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
