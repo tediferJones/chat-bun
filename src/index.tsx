@@ -14,6 +14,7 @@ import { renderToReadableStream } from 'react-dom/server';
 // How do we make sure the api will only take requests from logged in users
 // Working on a version with the api/websocket server seperate from front-end/auth
 // Still working, folder is ignored
+// We can now validate users in the api
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
