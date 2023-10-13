@@ -10,23 +10,24 @@ export function GET(req: any) {
 
 export async function POST(req: Request, servers: any) {
   const { username, password } = await req.json()
-  console.log(username, password)
-  // SANITIZE YOUR INPUTS
-  // How do we even go about doing this? This has direct access to the database, which is very risky
-  // console.log(await req.json())
-  const hash = await Bun.password.hash(password)
-  console.log(hash)
-  // servers['hello'] = 'i added this to the obj'
-  console.log(servers)
-  db.query(`INSERT INTO users (username, password) VALUES ($username, $password)`).run({
-    $username: username,
-    $password: password,
-  })
+  // console.log(username, password)
+  // console.log(servers)
 
-  // const query = db.query('SELECT * FROM users')
-  // const result = query.all()
-  // console.log(result)
-  console.log(db.query('SELECT * FROM users').all())
+  const hashedPassword = db.query<{ password: string }, { $username: string }>(
+    'SELECT password FROM users WHERE username = $username'
+  ).get({ $username: username })
+  console.log(hashedPassword)
+
+  if (hashedPassword?.password && await Bun.password.verify(password, hashedPassword.password)) {
+    console.log('PASSWORDS MATCH, USER SUCCESSFULLY AUTHENTICATED')
+    // Create a session record for this user, send back a cookie with a hash to validate users in the future
+
+  } else {
+    console.log('PASSWORDS DO NOT MATCH, DENY AUTHENTICATION')
+  }
+  // console.log('DATABASE RESULT:', result)
+
+  // console.log(db.query('SELECT * FROM users').all())
 
   return new Response('Hello from login api POST route')
 }

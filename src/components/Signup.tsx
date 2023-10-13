@@ -1,6 +1,6 @@
-import { useRef } from 'react'
+import { useRef } from 'react';
 
-export default function Login(props: any) {
+export default function Signup(props: any) {
   const username: { current: any } = useRef('')
   const password: { current: any } = useRef('')
 
@@ -8,7 +8,7 @@ export default function Login(props: any) {
     console.log(e)
     console.log(username.current.value)
     console.log(password.current.value)
-    fetch('/api/login', {
+    fetch('/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -21,8 +21,8 @@ export default function Login(props: any) {
   }
 
   return (
-    <div className='p-4 bg-blue-400'>
-      <h1>Login Component</h1>
+    <div className='p-4 bg-red-400'>
+      <h1>Signup Component</h1>
       <label>Username</label>
       <input type='text' ref={username} />
       <div className='p-2' />

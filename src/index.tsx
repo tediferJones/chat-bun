@@ -11,10 +11,18 @@ import { renderToReadableStream } from 'react-dom/server';
 // How do we keep user logged in?
 // When the user logs in, return a cookie, then just verify the cookie when an authotized action takes place (every message sent)
 //
+// Notes on layers folder:
 // How do we make sure the api will only take requests from logged in users
 // Working on a version with the api/websocket server seperate from front-end/auth
 // Still working, folder is ignored
 // We can now validate users in the api
+//
+// TO-DO:
+//    - Clear users table (truncate), it currently holds a whole bunch of un-hashed passwords
+//    - Make username field in users table unique, 
+//        - Then see what happens if we try to signup a user with a duplicate username
+//    - Switch tailwind css file generation to use spawnSync, or just await spawn
+//    - Rename input.css/output.css files to styles.css
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
@@ -149,12 +157,19 @@ const server = Bun.serve({
 
       // console.log(apiMatch.name)
       // console.log(req.method)
+      const apiFunc = apiRoutes[apiMatch.name][req.method]
+      if (apiFunc) {
+      // if (apiFunc && apiFunc[req.method]) {
+        return apiFunc(req, servers)
+      } else {
+        return new Response(`API Route ${apiMatch.name} does not have a ${req.method} method`)
+      }
 
-      return apiRoutes[apiMatch.name][req.method](req, servers)
+      // return apiRoutes[apiMatch.name][req.method](req, servers)
     } else {
       console.log(`RETURN FILE`)
 
-      let filePath = new URL(req.url).pathname;
+      const filePath = new URL(req.url).pathname;
       // console.log('FILE PATH')
       // console.log(filePath)
       // Maybe rename to 'res'

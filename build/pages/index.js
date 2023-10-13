@@ -111,6 +111,9 @@ function Login(props) {
   return jsx_dev_runtime3.jsxDEV("div", {
     className: "p-4 bg-blue-400",
     children: [
+      jsx_dev_runtime3.jsxDEV("h1", {
+        children: "Login Component"
+      }, undefined, false, undefined, this),
       jsx_dev_runtime3.jsxDEV("label", {
         children: "Username"
       }, undefined, false, undefined, this),
@@ -137,17 +140,71 @@ function Login(props) {
   }, undefined, true, undefined, this);
 }
 
-// pagesmodules/schedu
+// pagesmodules/scheduler/cj
+var import_react2 = __toESM(require_react(), 1);
 var jsx_dev_runtime4 = __toESM(require_jsx_dev_runtime(), 1);
-function index() {
-  return jsx_dev_runtime4.jsxDEV(Layout, {
-    title: "Welcome",
+function Signup(props) {
+  const username = import_react2.useRef("");
+  const password = import_react2.useRef("");
+  function clickHandler(e) {
+    console.log(e);
+    console.log(username.current.value);
+    console.log(password.current.value);
+    fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: username.current.value,
+        password: password.current.value
+      })
+    });
+  }
+  return jsx_dev_runtime4.jsxDEV("div", {
+    className: "p-4 bg-red-400",
     children: [
       jsx_dev_runtime4.jsxDEV("h1", {
+        children: "Signup Component"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime4.jsxDEV("label", {
+        children: "Username"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime4.jsxDEV("input", {
+        type: "text",
+        ref: username
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime4.jsxDEV("div", {
+        className: "p-2"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime4.jsxDEV("label", {
+        children: "Password"
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime4.jsxDEV("input", {
+        type: "text",
+        ref: password
+      }, undefined, false, undefined, this),
+      jsx_dev_runtime4.jsxDEV("button", {
+        onClick: clickHandler,
+        className: "p-2 bg-red-500",
+        children: "Submit"
+      }, undefined, false, undefined, this)
+    ]
+  }, undefined, true, undefined, this);
+}
+
+// pagesmodules/schedu
+var jsx_dev_runtime5 = __toESM(require_jsx_dev_runtime(), 1);
+function index() {
+  return jsx_dev_runtime5.jsxDEV(Layout, {
+    title: "Welcome",
+    children: [
+      jsx_dev_runtime5.jsxDEV("h1", {
         children: "Chat, but with bun"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime4.jsxDEV(Login, {}, undefined, false, undefined, this),
-      jsx_dev_runtime4.jsxDEV(NewConnection, {}, undefined, false, undefined, this)
+      jsx_dev_runtime5.jsxDEV(Login, {}, undefined, false, undefined, this),
+      jsx_dev_runtime5.jsxDEV(Signup, {}, undefined, false, undefined, this),
+      jsx_dev_runtime5.jsxDEV(NewConnection, {}, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
 }
