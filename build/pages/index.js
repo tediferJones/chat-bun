@@ -93,8 +93,7 @@ var jsx_dev_runtime3 = __toESM(require_jsx_dev_runtime(), 1);
 function Login(props) {
   const username = import_react.useRef("");
   const password = import_react.useRef("");
-  function clickHandler(e) {
-    console.log(e);
+  function clickHandler() {
     console.log(username.current.value);
     console.log(password.current.value);
     fetch("/api/login", {
@@ -106,7 +105,7 @@ function Login(props) {
         username: username.current.value,
         password: password.current.value
       })
-    });
+    }).then((res) => res.json()).then((data) => console.log(data));
   }
   return jsx_dev_runtime3.jsxDEV("div", {
     className: "p-4 bg-blue-400",
@@ -146,8 +145,7 @@ var jsx_dev_runtime4 = __toESM(require_jsx_dev_runtime(), 1);
 function Signup(props) {
   const username = import_react2.useRef("");
   const password = import_react2.useRef("");
-  function clickHandler(e) {
-    console.log(e);
+  function clickHandler() {
     console.log(username.current.value);
     console.log(password.current.value);
     fetch("/api/signup", {
@@ -159,7 +157,7 @@ function Signup(props) {
         username: username.current.value,
         password: password.current.value
       })
-    });
+    }).then((res) => res.json()).then((data) => console.log(data));
   }
   return jsx_dev_runtime4.jsxDEV("div", {
     className: "p-4 bg-red-400",

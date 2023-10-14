@@ -4,8 +4,8 @@ export default function Login(props: any) {
   const username: { current: any } = useRef('')
   const password: { current: any } = useRef('')
 
-  function clickHandler(e: any) {
-    console.log(e)
+  function clickHandler() {
+    // console.log(e)
     console.log(username.current.value)
     console.log(password.current.value)
     fetch('/api/login', {
@@ -17,7 +17,8 @@ export default function Login(props: any) {
         username: username.current.value,
         password: password.current.value,
       })
-    })
+    }).then((res: Response) => res.json())
+      .then((data: any) => console.log(data))
   }
 
   return (

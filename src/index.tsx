@@ -18,9 +18,10 @@ import { renderToReadableStream } from 'react-dom/server';
 // We can now validate users in the api
 //
 // TO-DO:
-//    - Clear users table (truncate), it currently holds a whole bunch of un-hashed passwords
-//    - Make username field in users table unique, 
-//        - Then see what happens if we try to signup a user with a duplicate username
+//    - [ DONE ] Clear users table (truncate), it currently holds a whole bunch of un-hashed passwords
+//    - [ DONE ] Make username field in users table unique, 
+//        - [ DONE ] Then see what happens if we try to signup a user with a duplicate username
+//    - [ DONE ] Create proper functions to create/load sqlite tables, see schema example below
 //    - Switch tailwind css file generation to use spawnSync, or just await spawn
 //    - Rename input.css/output.css files to styles.css
 
