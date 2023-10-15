@@ -22,13 +22,15 @@ import { renderToReadableStream } from 'react-dom/server';
 //    - [ DONE ] Make username field in users table unique, 
 //        - [ DONE ] Then see what happens if we try to signup a user with a duplicate username
 //    - [ DONE ] Create proper functions to create/load sqlite tables, see schema example below
-//    - Switch tailwind css file generation to use spawnSync, or just await spawn
-//    - Rename input.css/output.css files to styles.css
+//    - [ DONE ] Switch tailwind css file generation to use spawnSync, or just await spawn
+//    - [ DONE ] Rename input.css/output.css files to styles.css
+//    - [ DONE ] Dont use UUID as session token, see /api/login for solution
+//    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
 
-// Setup server
+// Get pages to build
 const srcRouter = new Bun.FileSystemRouter({
   dir: rootPath + 'src/pages',
   style: 'nextjs',
@@ -40,7 +42,7 @@ Bun.spawnSync(['rm', '-r', 'build/'], {
 })
 
 // Generate css file from tailwind classes
-Bun.spawn(['npx', 'tailwindcss', '-i', 'src/input.css', '-o', 'public/output.css'], {
+Bun.spawnSync(['npx', 'tailwindcss', '-i', 'src/style.css', '-o', 'public/style.css'], {
   cwd: rootPath,
 })
 

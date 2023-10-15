@@ -1,10 +1,3 @@
-import Navbar from './components/Navbar';
-// import React from 'react';
-
-// <link rel="manifest" href="/manifest.json" />
-// <img src={"/bunlogo.svg"} className="App-logo" alt="logo" />
-// <link rel="stylesheet" href="/index.css" />
-
 export default function Layout(props: { title: string; children: React.ReactNode }) {
   return (
     <html>
@@ -19,7 +12,7 @@ export default function Layout(props: { title: string; children: React.ReactNode
         />
         <link rel="apple-touch-icon" href="/logo192.png" />
         <title>{props.title}</title>
-        <link rel="stylesheet" href="/output.css" />
+        <link rel="stylesheet" href="/style.css" />
       </head>
       <body>
         <div className="App" role="main">

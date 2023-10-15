@@ -7,6 +7,7 @@ export function GET(req: any) {
 
 export async function POST(req: Request, servers: any) {
   const { username, password } = await req.json()
+  console.log('REQ COOKIE: ', req.headers.get('cookie'))
   // console.log(username, password)
   // console.log(servers)
 
@@ -37,17 +38,22 @@ export async function POST(req: Request, servers: any) {
   // const sessionToken = crypto.randomUUID()
   let token;
   let tokenExists = true;
+  // let test;
   
   while (tokenExists) {
     console.log('GENERATING NEW TOKEN')
-    const testToken = crypto.randomUUID()
+
+    const testToken = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64')
     const result = db.query('SELECT * FROM sessions WHERE token = $token').get({ $token: testToken })
+
     if (!result) {
       token = testToken;
       tokenExists = false;
     }
   }
   console.log(token)
+  // const expirationDate = new Date(Date.now() + 1000*60*60*24)
+  // console.log(test)
 
   // console.log('DATABASE RESULT:', result)
 
@@ -55,5 +61,9 @@ export async function POST(req: Request, servers: any) {
 
   return new Response(JSON.stringify({
     errorMsg: 'Login successful'
-  }))
+  }), {
+      headers: {
+        'Set-Cookie': `sessionToken=${token}; Max-Age=${60*60*24}; Path=/; HttpOnly; Secure;`
+      }
+    })
 }
