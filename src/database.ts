@@ -8,7 +8,7 @@ db.query(`CREATE TABLE IF NOT EXISTS users (
 )`).run()
 
 db.query(`CREATE TABLE IF NOT EXISTS sessions (
-  username TEXT UNIQUE,
+  username TEXT,
   token TEXT UNIQUE,
   expiresAt INTEGER
 )`).run()
