@@ -1,35 +1,31 @@
 import db from '../database';
+import getCookies from './getCookies';
 
-export default function verifyUser(cookies: string | null) {
-  // console.log('########   INSIDE VERIFY USER   ########')
-  if (cookies === null) {
-    return false;
+export default function verifyUser(req: Request) {
+  const result = {
+    status: false,
+    username: '',
   }
-  const cookiesObj: { [key: string]: string } = {}
-  cookies.split('; ').forEach((cookie: string) => {
-    const tuple = cookie.split('=')
-    cookiesObj[tuple[0]] = tuple[1]
-  })
-  const token = cookiesObj['sessionToken']
-  const dbResult = db.query<{
-    expiresAt: number, 
-    username: string,
-    token: string,
-  }, { 
-    $token: string, 
-  }>('SELECT * FROM sessions WHERE token = $token').get({ $token: token })
-  // console.log(dbResult)
 
-  // Clean-up expired cookies
-  // Consider moving this somewhere else, we dont want this running on every validation request
-  db.query('DELETE FROM sessions WHERE expiresAt < $expiresAt').run({ $expiresAt: Date.now() })
+  const { sessionToken } = getCookies(req)
+  // const token = sessionToken
 
-  // console.log('EXPIRED TOKENS')
-  // console.log(test)
-  // console.log('Current Time ', currentTime)
-  console.log(db.query('SELECT * FROM sessions').all())
+  if (sessionToken) {
+    const dbResult = db.query<{
+      expiresAt: number, 
+      username: string,
+      token: string,
+    }, { 
+        $token: string, 
+    }>('SELECT * FROM sessions WHERE token = $token').get({ $token: sessionToken })
 
-  // console.log('########   LEAVING VERIFY USER   ########')
-  return Number(dbResult?.expiresAt) > Date.now()
-  // return dbResult ? true : false
+    if (dbResult?.expiresAt && dbResult?.username && dbResult.expiresAt > Date.now()) {
+      result.status = true
+      result.username = dbResult.username
+    }
+  }
+
+  // console.log(db.query('SELECT * FROM sessions').all())
+
+  return result
 }

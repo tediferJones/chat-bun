@@ -2,6 +2,7 @@ import Layout from '../Layout'
 import NewConnection from '../components/NewConnection'
 import Login from '../components/Login'
 import Signup from '../components/Signup'
+import UserInfo from '../components/UserInfo'
 
 export default function index() {
   return (
@@ -10,6 +11,7 @@ export default function index() {
       <Login />
       <Signup />
       <NewConnection />
+      <UserInfo />
     </Layout>
   )
 }

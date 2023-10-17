@@ -1,10 +1,5 @@
-export function GET(req: any) {
-  return new Response('hello from /api/verify GET route')
+import verifyUser from "../../modules/verifyUser"
 
+export function GET(req: Request) {
+  return new Response(JSON.stringify(verifyUser(req)))
 }
-
-export function POST(req: any) {
-  return new Response('hello from /api/verify POST route')
-}
-
-// export { GET, POST }

@@ -1,4 +1,5 @@
 import { renderToReadableStream } from 'react-dom/server';
+import db from './database';
 
 // EXAMPLE: https://www.npmjs.com/package/@bun-examples/react-ssr
 // [ THIS IS THE FIX ] Consider creating a layout file, maybe thats part of what is causing issues
@@ -127,6 +128,11 @@ const servers: { [key: string]: any } = {
 //   }, // handlers
 // });
 
+// Clean-up expired cookies, should run once per day
+setInterval(() => {
+  db.query('DELETE FROM sessions WHERE expiresAt < $expiresAt').run({ $expiresAt: Date.now() })
+}, 1000*60*60*24);
+
 // Run server to serve HTML to user
 const server = Bun.serve({
   port: 3000,
@@ -192,7 +198,7 @@ const server = Bun.serve({
 
       // console.log(`file exists?: ${!!file}`)
       if (file && !await file.exists()) {
-        return new Response(`Page ${filePath} not found`, { status: 404 })
+        return new Response(JSON.stringify(`Page ${filePath} not found`), { status: 404 })
       }
 
       // console.log(filePath)
