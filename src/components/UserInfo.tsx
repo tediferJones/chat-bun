@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
 
-// What do want this to accomplish?
-// Send fetch req to server, which will run "verifyUser" and return the result
-// Result should contain the username if user is verified
-
 export default function UserInfo() {
   const [status, setStatus] = useState<null | true | false>(null);
   const [username, setUsername] = useState<string>('')
@@ -23,11 +19,19 @@ export default function UserInfo() {
   return (
     <div>
       {status === null ? <h1>Loading...</h1> :
-        status === false ? <button>Login</button> :
+        status === false ? <a href='/login'>Login</a> :
           <>
             <h1>{username}</h1>
             <button onClick={() => {
               fetch('/api/logout')
+                .then((res: Response) => res.json())
+                .then((data: any) => {
+                  console.log(data)
+                  if (data.status) {
+                    // @ts-ignore
+                    window.location.href = '/login'
+                  }
+                })
               setRefreshToggle(!refreshToggle)
             }}>Logout</button>
           </>

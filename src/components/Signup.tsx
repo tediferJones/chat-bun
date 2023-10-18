@@ -17,7 +17,12 @@ export default function Signup(props: any) {
         password: password.current.value,
       })
     }).then((res: Response) => res.json())
-      .then((data: any) => console.log(data))
+      .then((data: any) => {
+        if (data.status) {
+          // @ts-ignore
+          window.location.href = '/login';
+        }
+      })
   }
 
   return (
@@ -29,6 +34,7 @@ export default function Signup(props: any) {
       <label>Password</label>
       <input type='text' ref={password} />
       <button onClick={clickHandler} className='p-2 bg-red-500'>Submit</button>
+      <div>Already have an account? <a href='/login'>Log in here</a></div>
     </div>
   )
 }

@@ -19,23 +19,12 @@ import db from './database';
 // We can now validate users in the api
 //
 // TO-DO:
-//    - [ DONE ] Clear users table (truncate), it currently holds a whole bunch of un-hashed passwords
-//    - [ DONE ] Make username field in users table unique, 
-//        - [ DONE ] Then see what happens if we try to signup a user with a duplicate username
-//    - [ DONE ] Create proper functions to create/load sqlite tables, see schema example below
-//    - [ DONE ] Switch tailwind css file generation to use spawnSync, or just await spawn
-//    - [ DONE ] Rename input.css/output.css files to styles.css
-//    - [ DONE ] Dont use UUID as session token, see /api/login for solution
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
+//    - Update login and signup pages to use forms
+//      - This should allow us to remove useRef 
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
-
-// Get pages to build
-const srcRouter = new Bun.FileSystemRouter({
-  dir: rootPath + 'src/pages',
-  style: 'nextjs',
-})
 
 // Delete old build dir
 Bun.spawnSync(['rm', '-r', 'build/'], {
@@ -45,6 +34,12 @@ Bun.spawnSync(['rm', '-r', 'build/'], {
 // Generate css file from tailwind classes
 Bun.spawnSync(['npx', 'tailwindcss', '-i', 'src/style.css', '-o', 'public/style.css'], {
   cwd: rootPath,
+})
+
+// Get pages to build
+const srcRouter = new Bun.FileSystemRouter({
+  dir: rootPath + 'src/pages',
+  style: 'nextjs',
 })
 
 await Bun.build({
@@ -147,19 +142,24 @@ const server = Bun.serve({
     // console.log(apiRoutes)
     // console.log(pages)
 
-    if (builtMatch && builtMatch.pathname !== builtMatch.name + '.js') {
-    // if (builtMatch) {
+    // if (builtMatch && builtMatch.pathname !== builtMatch.name + '.js') {
+    if (builtMatch) {
       console.log('RETURN PAGE')
       // console.log("MATCHED PAGE")
       // console.log(builtMatch)
-      // const stream = await renderToReadableStream(<PageToRender.default />, {
-      // const stream = await renderToReadableStream(<pages[builtMatch.name] />, {
-      const stream = await renderToReadableStream(pages[builtMatch.name].default({ params: builtMatch.params }), {
-        bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
-        bootstrapModules: ['/hydrate.js'],
-      });
+      // const stream = await renderToReadableStream(pages[builtMatch.name].default({ params: builtMatch.params }), {
+      //   bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
+      //   bootstrapModules: ['/hydrate.js'],
+      // });
 
-      return new Response(stream);
+      // return new Response(stream);
+
+      return new Response(await renderToReadableStream(
+        pages[builtMatch.name].default({ params: builtMatch.params }), {
+          bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
+          bootstrapModules: ['/hydrate.js'],
+        }
+      ));
     } else if (apiMatch) {
       console.log('RETURN API RESPONSE')
       // console.log(apiMatch)
@@ -167,37 +167,32 @@ const server = Bun.serve({
       // console.log(apiMatch.name)
       // console.log(req.method)
       const apiFunc = apiRoutes[apiMatch.name][req.method]
-      if (apiFunc) {
-      // if (apiFunc && apiFunc[req.method]) {
-        return apiFunc(req, servers)
-      } else {
-        return new Response(`API Route ${apiMatch.name} does not have a ${req.method} method`)
-      }
+      return apiFunc ? apiFunc(req, servers) : 
+        new Response(`API Route ${apiMatch.name} does not have a ${req.method} method`)
+      // if (apiFunc) {
+      //   return apiFunc(req, servers)
+      // } else {
+      //   return new Response(`API Route ${apiMatch.name} does not have a ${req.method} method`)
+      // }
 
       // return apiRoutes[apiMatch.name][req.method](req, servers)
     } else {
       console.log(`RETURN FILE`)
 
       const filePath = new URL(req.url).pathname;
-      // console.log('FILE PATH')
-      // console.log(filePath)
+      const directoryOptions = ['build/pages', 'build', 'public']
       // Maybe rename to 'res'
       let file;
 
-      const paths = [
-        (filePath: string) => rootPath + 'build/pages' + filePath,
-        (filePath: string) => rootPath + 'build' + filePath,
-        (filePath: string) => rootPath + 'public' + filePath,
-      ];
-      for (let i = 0; i < paths.length; i++) {
-        file = Bun.file(paths[i](filePath))
+      for (let i = 0; i < directoryOptions.length; i++) {
+        file = Bun.file(rootPath + directoryOptions[i] + filePath)
         if (await file.exists()) {
           break
         }
       }
 
-      // console.log(`file exists?: ${!!file}`)
-      if (file && !await file.exists()) {
+      // If we still dont have a file, return 404
+      if (!await file?.exists()) {
         return new Response(JSON.stringify(`Page ${filePath} not found`), { status: 404 })
       }
 

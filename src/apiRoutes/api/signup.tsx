@@ -2,18 +2,16 @@ import db from '../../database';
 
 export async function POST(req: Request) {
   const { username, password } = await req.json();
+  const resData = {
+    status: false,
+    errorMsg: '',
+  }
 
-  // MAKE SURE USERNAME FIELD IS UNIQUE IN SQL SCHEMA
-  // and then see what happens if we try to send it a duplicate username
-  //
-  // YOU MUST CHECK TO MAKE SURE THE USERNAME IS UNIQUE
+  // Validate that username does not already exist
   const existingUsername = db.query('SELECT * FROM users WHERE username = $username').get({ $username: username })
-  console.log(existingUsername)
   if (existingUsername) {
-    console.log('EXISTING USERNAME FOUND')
-    return new Response(JSON.stringify({
-      errorMsg: 'Username already exists',
-    }))
+    resData.errorMsg = 'Username already exists'
+    return new Response(JSON.stringify(resData))
   }
 
   db.query('INSERT INTO users (username, password) VALUES ($username, $password)')
@@ -22,7 +20,8 @@ export async function POST(req: Request) {
       $password: await Bun.password.hash(password),
     })
 
-  console.log(db.query('SELECT * FROM users').all())
+  // console.log(db.query('SELECT * FROM users').all())
 
-  return new Response(JSON.stringify('created new user'))
+  resData.status = true;
+  return new Response(JSON.stringify(resData))
 }

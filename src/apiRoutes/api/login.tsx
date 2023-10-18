@@ -1,13 +1,12 @@
 import db from '../../database';
 import verifyUser from '../../modules/verifyUser';
 
-// export function GET(req: any) {
-//   console.log(req.body)
-//   return new Response('Hello from login api route')
-// }
-
 export async function POST(req: Request, servers: any) {
   const { username, password }: { username: string, password: string } = await req.json()
+  const resData = {
+    status: false,
+    errorMsg: '',
+  }
   // console.log('REQ COOKIE: ', req.headers.get('cookie'))
   console.log('Is user verified?: ', verifyUser(req))
 
@@ -17,20 +16,19 @@ export async function POST(req: Request, servers: any) {
 
   // If db result contains no password, the username does not exist
   if (!hashedPassword?.password) {
-    return new Response(JSON.stringify({
-      errorMsg: 'Username not found'
-    }))
+    resData.errorMsg = 'Username not found';
+    return new Response(JSON.stringify(resData))
   }
 
   // If the hashed password doesnt match db result, password is wrong
   if (!await Bun.password.verify(password, hashedPassword.password)) {
-    return new Response(JSON.stringify({
-      errorMsg: 'Password does not match'
-    }))
+    resData.errorMsg = 'Password does not match'
+    return new Response(JSON.stringify(resData))
   }
   
   // If the function makes it to this point, the user has been successfully authenticated
   // Create a session record for this user, send back a cookie with a hash to validate users in the future
+  resData.status = true;
   let token;
   let tokenExists = true;
   
@@ -57,12 +55,12 @@ export async function POST(req: Request, servers: any) {
       })
   }
 
-  // const dbResult = db.query('SELECT * FROM sessions').all()
-  // console.log(dbResult)
-
-  return new Response(JSON.stringify({ errorMsg: 'Login successful' }), {
+  // return new Response(JSON.stringify({ errorMsg: 'Login successful' }), {
+  return new Response(JSON.stringify(resData), {
+      // status: 302,
       headers: {
-        'Set-Cookie': `sessionToken=${token}; Expires=${expiresAt}; Path=/; SameSite=Strict; HttpOnly; Secure;`
+        'Set-Cookie': `sessionToken=${token}; Expires=${expiresAt}; Path=/; SameSite=Strict; HttpOnly; Secure;`,
+        // 'Location': '/'
       }
     })
 }

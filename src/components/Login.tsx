@@ -9,6 +9,7 @@ export default function Login(props: any) {
     console.log(username.current.value)
     console.log(password.current.value)
     fetch('/api/login', {
+      redirect: 'follow',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -18,7 +19,12 @@ export default function Login(props: any) {
         password: password.current.value,
       })
     }).then((res: Response) => res.json())
-      .then((data: any) => console.log(data))
+      .then((data: any) => {
+        if (data.status) {
+          // @ts-ignore
+          window.location.href = '/'
+        }
+      })
   }
 
   return (
@@ -30,6 +36,7 @@ export default function Login(props: any) {
       <label>Password</label>
       <input type='text' ref={password} />
       <button onClick={clickHandler} className='p-2 bg-red-500'>Submit</button>
+      <div>Don't have an account? <a href='/signup'>Sign up here</a></div>
     </div>
   )
 }
