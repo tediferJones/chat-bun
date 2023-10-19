@@ -22,26 +22,81 @@ import db from './database';
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
 //    - Update login and signup pages to use forms
 //      - This should allow us to remove useRef 
+//    - Rename all api routes to .ts instead of .tsx
+//    - Add input validation to client and server
 
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
 
-// Delete old build dir
-Bun.spawnSync(['rm', '-r', 'build/'], {
-  cwd: rootPath,
-})
-
-// Generate css file from tailwind classes
-Bun.spawnSync(['npx', 'tailwindcss', '-i', 'src/style.css', '-o', 'public/style.css'], {
-  cwd: rootPath,
-})
+// // Delete old build dir
+// Bun.spawnSync(['rm', '-r', 'build/'], {
+//   cwd: rootPath,
+// })
+// 
+// // Generate css file from tailwind classes
+// Bun.spawnSync(['npx', 'tailwindcss', '-i', 'src/style.css', '-o', 'public/style.css'], {
+//   cwd: rootPath,
+// })
 
 // Get pages to build
-const srcRouter = new Bun.FileSystemRouter({
-  dir: rootPath + 'src/pages',
-  style: 'nextjs',
-})
+// const srcRouter = new Bun.FileSystemRouter({
+//   dir: rootPath + 'src/pages',
+//   style: 'nextjs',
+// })
 
+// await Bun.build({
+//   entrypoints: [
+//     rootPath + 'src/hydrate.tsx',
+//     ...Object.values(srcRouter.routes),
+//   ],
+//   outdir: rootPath + 'build',
+//   target: 'browser',
+//   splitting: true,
+// })
+
+// const buildRouter = new Bun.FileSystemRouter({
+//   dir: rootPath + 'build/pages',
+//   style: 'nextjs',
+// })
+// 
+// const apiRouter = new Bun.FileSystemRouter({
+//   dir: rootPath + 'src/apiRoutes',
+//   style: 'nextjs',
+// })
+//
+// Import all pages so we dont have to dynamically import them on demand
+// const pages: { [key: string]: any } = {};
+// Object.keys(srcRouter.routes).forEach(async (path) => {
+//   pages[path] = await import(srcRouter.routes[path]);
+// })
+// const apiRoutes: { [key: string]: any } = {};
+// Object.keys(apiRouter.routes).forEach(async (path) => {
+//   apiRoutes[path] = await import(apiRouter.routes[path]);
+// })
+
+function cmdRun(cmd: string, currentDir?: string) {
+  Bun.spawnSync(cmd.split(' '), { cwd: currentDir})
+}
+
+function newRouter(path: string) {
+  return new Bun.FileSystemRouter({
+    dir: rootPath + path,
+    style: 'nextjs',
+  })
+}
+
+function importPaths(paths: { [key: string]: string}): { [key: string]: any } {
+  const routes: { [key: string] : string } = {};
+  Object.keys(paths).forEach(async (path: string) => {
+    routes[path] = await import(paths[path])
+  })
+  return routes;
+}
+
+cmdRun('rm -r build/', rootPath)
+cmdRun('npx tailwindcss -i src/style.css -o public/style.css', rootPath)
+
+const srcRouter = newRouter('src/pages');
 await Bun.build({
   entrypoints: [
     rootPath + 'src/hydrate.tsx',
@@ -50,27 +105,15 @@ await Bun.build({
   outdir: rootPath + 'build',
   target: 'browser',
   splitting: true,
-})
+});
+const buildRouter = newRouter('build/pages');
+const apiRouter = newRouter('src/apiRoutes');
 
-const buildRouter = new Bun.FileSystemRouter({
-  dir: rootPath + 'build/pages',
-  style: 'nextjs',
-})
+const pages = importPaths(srcRouter.routes)
+const apiRoutes = importPaths(apiRouter.routes)
+// console.log(srcRouter)
+// console.log(buildRouter)
 
-const apiRouter = new Bun.FileSystemRouter({
-  dir: rootPath + 'src/apiRoutes',
-  style: 'nextjs',
-})
-
-// Import all pages so we dont have to dynamically import them on demand
-const pages: { [key: string]: any } = {};
-Object.keys(srcRouter.routes).forEach(async (path) => {
-  pages[path] = await import(srcRouter.routes[path]);
-})
-const apiRoutes: { [key: string]: any } = {};
-Object.keys(apiRouter.routes).forEach(async (path) => {
-  apiRoutes[path] = await import(apiRouter.routes[path]);
-})
 // console.log(apiRouter)
 // console.log(apiRoutes)
 // console.log('############')
@@ -133,6 +176,8 @@ const server = Bun.serve({
   port: 3000,
   async fetch(req) {
     const builtMatch = buildRouter.match(req)
+    // RENAME THIS TO pageMatch
+    // const builtMatch = srcRouter.match(req)
     const apiMatch = apiRouter.match(req)
     // const srcMatch = srcRouter.match(req)
     // console.log(pages)

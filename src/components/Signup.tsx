@@ -1,26 +1,27 @@
-import { useRef } from 'react';
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+import { useState } from 'react';
 
-export default function Signup(props: any) {
-  const username: { current: any } = useRef('')
-  const password: { current: any } = useRef('')
+export default function Signup() {
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
-  function clickHandler() {
-    console.log(username.current.value)
-    console.log(password.current.value)
+  function clickHandler(e: any) {
+    e.preventDefault();
     fetch('/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: username.current.value,
-        password: password.current.value,
+        username: e.target.username.value,
+        password: e.target.password.value,
       })
     }).then((res: Response) => res.json())
       .then((data: any) => {
         if (data.status) {
-          // @ts-ignore
           window.location.href = '/login';
+        } else {
+          setErrorMsg(data.errorMsg)
         }
       })
   }
@@ -28,13 +29,16 @@ export default function Signup(props: any) {
   return (
     <div className='p-4 bg-red-400'>
       <h1>Signup Component</h1>
-      <label>Username</label>
-      <input type='text' ref={username} />
-      <div className='p-2' />
-      <label>Password</label>
-      <input type='text' ref={password} />
-      <button onClick={clickHandler} className='p-2 bg-red-500'>Submit</button>
+      <form onSubmit={clickHandler}>
+        <label htmlFor='username'>Username</label>
+        <input name='username' type='text' required />
+        <div className='p-2' />
+        <label htmlFor='password'>Password</label>
+        <input name='password' type='text' required />
+        <button className='p-2 bg-red-500'>Submit</button>
+      </form>
       <div>Already have an account? <a href='/login'>Log in here</a></div>
+      <div className='text-red-700 font-bold'>{errorMsg}</div>
     </div>
   )
 }
