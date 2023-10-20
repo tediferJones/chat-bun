@@ -1,14 +1,21 @@
 import db from '../../database';
-import verifyUser from '../../modules/verifyUser';
+// import verifyUser from '../../modules/verifyUser';
+import verifyInputs from '../../modules/verifyInputs';
 
 export async function POST(req: Request, servers: any) {
   const { username, password }: { username: string, password: string } = await req.json()
-  const resData = {
+  const resData: { status: boolean, errors: string[] } = {
     status: false,
-    errorMsg: '',
+    errors: [],
   }
+  const validation = verifyInputs({ username, password })
+  if (!validation.isValid) {
+    resData.errors = validation.errors
+    return new Response(JSON.stringify(resData))
+  }
+
   // console.log('REQ COOKIE: ', req.headers.get('cookie'))
-  console.log('Is user verified?: ', verifyUser(req))
+  // console.log('Is user verified?: ', verifyUser(req))
 
   const hashedPassword = db.query<{ password: string }, { $username: string }>(
     'SELECT password FROM users WHERE username = $username'
@@ -16,13 +23,15 @@ export async function POST(req: Request, servers: any) {
 
   // If db result contains no password, the username does not exist
   if (!hashedPassword?.password) {
-    resData.errorMsg = 'Username not found';
+    // resData.errorMsg = 'Username not found';
+    resData.errors = ['Username not found'];
     return new Response(JSON.stringify(resData))
   }
 
   // If the hashed password doesnt match db result, password is wrong
   if (!await Bun.password.verify(password, hashedPassword.password)) {
-    resData.errorMsg = 'Password does not match'
+    // resData.errorMsg = 'Password does not match'
+    resData.errors = ['Password does not match']
     return new Response(JSON.stringify(resData))
   }
   

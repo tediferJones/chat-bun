@@ -2,9 +2,9 @@
   "name": "bun-v2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.tsx",
+  "main": "src/server.tsx",
   "scripts": {
-    "dev": "npx bun --watch src/index.tsx"
+    "dev": "npx bun --watch src/server.tsx"
   },
   "keywords": [],
   "author": "",
