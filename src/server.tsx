@@ -1,5 +1,6 @@
 import { renderToReadableStream } from 'react-dom/server';
 import db from './database';
+import { Server } from 'bun';
 
 // Notes on layers folder:
 // How do we make sure the api will only take requests from logged in users
@@ -78,29 +79,31 @@ setInterval(() => {
 }, 1000*60*60*24);
 
 // We should setup the websocket server somewhere around here
-const servers: { [key: string]: any } = {
-  servers: [],
-  newServer: (port: number, servername: string) => {
-    return Bun.serve({
-      port,
-      fetch: (req, server) => {
-        if (server.upgrade(req)) {
-          return;
-        } else {
-          return new Response("Upgrade failed :(", { status: 500 });
-        }
-      },
-      websocket: {
-        message(ws, message) {
-          console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
-          console.log(ws, message)
-        },
-        open(ws) {
-          console.log('WEBSOCKET HAS BEEN OPENED')
-        }
-      }
-    })
-  }
+const servers: { [key: string]: Server } = {
+  // servers: {},
+  // newServer: (port: number, servername: string) => {
+  //   return Bun.serve({
+  //     port,
+  //     fetch: (req, server) => {
+  //       return server.upgrade(req) ? undefined : 
+  //         new Response("Upgrade failed :(", { status: 500 });
+  //       // if (server.upgrade(req)) {
+  //       //   return;
+  //       // } else {
+  //       //   return new Response("Upgrade failed :(", { status: 500 });
+  //       // }
+  //     },
+  //     websocket: {
+  //       message(ws, message) {
+  //         console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
+  //         console.log(ws, message)
+  //       },
+  //       open(ws) {
+  //         console.log('WEBSOCKET HAS BEEN OPENED')
+  //       }
+  //     }
+  //   })
+  // }
 };
 
 // Run server to serve HTML to user
@@ -108,6 +111,7 @@ const server = Bun.serve({
   port: 3000,
   async fetch(req) {
     console.log(req.method + ', ' + new URL(req.url).pathname)
+    // console.log('Active Servers: ', servers)
     // RENAME THIS TO pageMatch
     const builtMatch = buildRouter.match(req)
     const apiMatch = apiRouter.match(req)
