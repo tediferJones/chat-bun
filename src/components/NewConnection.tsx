@@ -3,7 +3,9 @@ import verifyInputs from '../modules/verifyInputs'
 
 export default function NewConnection() {
   const [errors, setErrors] = useState<string[]>([])
-  const servers: { [key: string]: any } = {}
+  const [currentServer, setCurrentServer] = useState('');
+  const [servers, setServers] = useState<{ [key: string]: any }>({});
+  // const servers: { [key: string]: any } = {}
 
   function submitHandler(e: any) {
     e.preventDefault();
@@ -33,11 +35,21 @@ export default function NewConnection() {
           return setErrors(data.errors)
         }
 
-        servers[inputs.servername] = new WebSocket(`ws://localhost:${data.port}`)
-        servers[inputs.servername].onmessage = ({ data }: { data: string }) => console.log(data)
-        setTimeout(() => {
-          servers[inputs.servername].send('Hello from the client')
-        }, 1000)
+        console.log(data)
+        const ws = new WebSocket(`ws://localhost:${data.port}`);
+        ws.onopen = () => console.log('WebSocket has been opened')
+        ws.onclose = () => console.log('WebSocket has been closed')
+        ws.onmessage = ({ data }) => console.log('MESSAGE CONTENTS: ', data)
+        setServers({ ...servers, [inputs.servername]: ws })
+        // servers[inputs.servername] = ws;
+        // servers[inputs.servername] = new WebSocket(`ws://localhost:${data.port}`)
+        // servers[inputs.servername].onmessage = ({ data }: { data: string }) => console.log(data)
+        // console.log(servers)
+
+        setCurrentServer(inputs.servername)
+        // setTimeout(() => {
+        //   servers[inputs.servername].send('Hello from the client')
+        // }, 1000)
       })
 
   }
@@ -52,6 +64,12 @@ export default function NewConnection() {
       <div>
         <h2>Active Connections</h2>
       </div>
+      <button onClick={() => {
+        servers[currentServer].send('SOME MESSAGE')
+        // console.log(servers)
+        // console.log(servers[currentServer])
+        // console.log(currentServer)
+      }}>Send Hello World</button>
     </div>
   )
 }

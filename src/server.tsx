@@ -79,7 +79,8 @@ setInterval(() => {
 }, 1000*60*60*24);
 
 // We should setup the websocket server somewhere around here
-const servers: { [key: string]: Server } = {
+const servers: { [key: string]: any } = {
+// const servers: { [key: string]: Server } = {
   // servers: {},
   // newServer: (port: number, servername: string) => {
   //   return Bun.serve({

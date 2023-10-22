@@ -14,10 +14,13 @@ export async function POST(req: Request, servers: any) {
   }
 
   if (servers[servername]) {
-    resData.port = servers[servername].port;
+    console.log('SERVER ALREADY EXISTS, RETURNING')
+    // resData.port = servers[servername].port;
+    resData.port = servers[servername].server.port;
     return new Response(JSON.stringify(resData));
   }
 
+  console.log('CREATING A NEW WEBSOCKET SERVER')
   // If server doesn't already exist, find a new port number and create a new websocket server
   // Ports should be in the range from 49152 to 65535
   let port = 49152;
@@ -31,9 +34,16 @@ export async function POST(req: Request, servers: any) {
 
   resData.port = port;
 
-  console.log('CREATING A NEW WEBSOCKET SERVER')
-  servers[servername] = Bun.serve({
+  servers[servername] = {};
+  servers[servername].clients = [];
+  // servers[servername] = Bun.serve({
+  servers[servername].server = Bun.serve({
     port,
+    // fetch: (req, server) => {
+    //   if (server.upgrade(req)) return;
+    //   return new Response("Upgrade failed :(", { status: 500 });
+    // },
+    // fetch: () => new Response('lol idk'),
     fetch: (req, server) => server.upgrade(req) ? undefined : 
       new Response("Upgrade failed :(", { status: 500 }),
     // fetch: (req, server) => {
@@ -44,14 +54,19 @@ export async function POST(req: Request, servers: any) {
       message(ws, message) {
         console.log('WEBSOCKET HAS RECIEVED A MESSAGE')
         // console.log(ws)
-        console.log(servers[servername])
-        console.log(message)
-        ws.send(message)
+        // console.log(servers[servername])
+        // console.log(message)
+        // ws.send(message)
+
+        servers[servername].clients.forEach((ws: any) => ws.send(message))
+
         // console.log('LIST OF ALL CLIENTS')
         // console.log(servers[servername].clients)
       },
       open(ws) {
         console.log('WEBSOCKET HAS BEEN OPENED')
+        ws.send('you are connected')
+        servers[servername].clients.push(ws)
         // TRY TO VERIFY IF THE USER IS AUTHORIZED OR NOT
       }
     }
