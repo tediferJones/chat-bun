@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import verifyInputs from '../modules/verifyInputs'
+import verifyInputs from '../modules/verifyInputs';
 
 export default function NewConnection() {
   const [errors, setErrors] = useState<string[]>([])
   const [currentServer, setCurrentServer] = useState('');
   const [servers, setServers] = useState<{ [key: string]: any }>({});
+  const [chatHistory, setChatHistory] = useState<string[]>([])
   // const servers: { [key: string]: any } = {}
 
   function submitHandler(e: any) {
@@ -35,24 +36,25 @@ export default function NewConnection() {
           return setErrors(data.errors)
         }
 
-        console.log(data)
+        // console.log(data)
         const ws = new WebSocket(`ws://localhost:${data.port}`);
         ws.onopen = () => console.log('WebSocket has been opened')
         ws.onclose = () => console.log('WebSocket has been closed')
-        ws.onmessage = ({ data }) => console.log('MESSAGE CONTENTS: ', data)
+        ws.onmessage = ({ data }) => {
+          setChatHistory(pastMessages => [...pastMessages, data])
+        }
         setServers({ ...servers, [inputs.servername]: ws })
-        // servers[inputs.servername] = ws;
-        // servers[inputs.servername] = new WebSocket(`ws://localhost:${data.port}`)
-        // servers[inputs.servername].onmessage = ({ data }: { data: string }) => console.log(data)
-        // console.log(servers)
-
         setCurrentServer(inputs.servername)
-        // setTimeout(() => {
-        //   servers[inputs.servername].send('Hello from the client')
-        // }, 1000)
       })
 
   }
+
+  function sendHandler(e: any) {
+    e.preventDefault();
+    servers[currentServer].send(e.target.message.value)
+    e.target.message.value = ''
+  }
+
   return (
     <div>
       <form onSubmit={submitHandler}>
@@ -66,10 +68,15 @@ export default function NewConnection() {
       </div>
       <button onClick={() => {
         servers[currentServer].send('SOME MESSAGE')
-        // console.log(servers)
-        // console.log(servers[currentServer])
-        // console.log(currentServer)
       }}>Send Hello World</button>
+      <h1>Message Container</h1>
+      <div>{chatHistory.map((message: string, i: number) => {
+        return <div key={i}>{message}</div>
+      })}</div>
+      <form onSubmit={sendHandler}>
+        <input className='border-4 border-blue-500' name='message' type='text' required />
+        <button type='submit' >SEND MESSAGE</button>
+      </form>
     </div>
   )
 }

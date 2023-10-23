@@ -1,6 +1,6 @@
 import { renderToReadableStream } from 'react-dom/server';
 import db from './database';
-import { Server } from 'bun';
+// import { Server } from 'bun';
 
 // Notes on layers folder:
 // How do we make sure the api will only take requests from logged in users
