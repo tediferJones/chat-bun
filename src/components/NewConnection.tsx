@@ -5,6 +5,11 @@ export default function NewConnection() {
   const [errors, setErrors] = useState<string[]>([])
   const [currentServer, setCurrentServer] = useState('');
   const [servers, setServers] = useState<{ [key: string]: any }>({});
+
+  // This will need to be merged into servers obj, similar to how the server holds its websocket servers
+  // i.e. servers = {
+  //   servername: { server: aWebSocket, chatHistory: anArrayOfMessages }
+  // }
   const [chatHistory, setChatHistory] = useState<string[]>([])
   // const servers: { [key: string]: any } = {}
 
@@ -18,7 +23,6 @@ export default function NewConnection() {
     }
 
     const validation = verifyInputs(inputs);
-
     if (!validation.isValid) {
       setErrors(validation.errors);
       return
@@ -29,7 +33,7 @@ export default function NewConnection() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(inputs)
+      body: JSON.stringify(inputs),
     }).then((res: Response) => res.json())
       .then((data: any) => {
         if (data.errors.length > 0) {
@@ -77,6 +81,9 @@ export default function NewConnection() {
         <input className='border-4 border-blue-500' name='message' type='text' required />
         <button type='submit' >SEND MESSAGE</button>
       </form>
+      <button onClick={() => {
+        servers[currentServer].close()
+      }}>Close current connection</button>
     </div>
   )
 }
