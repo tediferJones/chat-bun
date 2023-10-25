@@ -26,7 +26,7 @@ export async function POST(req: Request, servers: any) {
   // let port = 49152;
   resData.port = 49152;
   // This isnt fast, but it keeps port numbers low and prevents copies
-  const activePorts = Object.keys(servers).map((servername: string) => servers[servername].port);
+  const activePorts = Object.keys(servers).map((servername: string) => servers[servername].server.port);
   // while (activePorts.includes(port)) port++
   while (activePorts.includes(resData.port)) resData.port++
 
