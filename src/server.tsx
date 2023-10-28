@@ -8,13 +8,20 @@ import { Server, ServerWebSocket } from 'bun';
 // Still working, folder is ignored
 // We can now validate users in the api
 //
+// Chat history problem is the result of a 'Stale Closure'
+//
 // TO-DO:
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
 //    - [ DONE ] Update login and signup pages to use forms
 //      - [ DONE ] This should allow us to remove useRef 
 //    - [ DONE ] Rename all api routes to .ts instead of .tsx
 //    - [ DONE ] Add input validation to client and server
+//    - Add more types to types file
+//    - Clean up /api/getPort
+//    - Style it, we want to use tabs as the "server management" interface
+//    - Add salt to password verification for user auth
 
+// THIS CAN BE REPLACED WITH TYPESCRIPT MAGIC, see here: https://bun.sh/docs/runtime/typescript#path-mapping
 // All paths are based on the location of this file (the file that runs the server)
 const rootPath = import.meta.dir.replace('src', '');
 

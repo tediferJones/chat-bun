@@ -82,6 +82,7 @@ export async function POST(req: Request, servers: any) {
           servers[servername].clients.forEach((client: any) => {
             client.send(`${ws.data.username} has disconnected`)
           })
+          // IF THERE ARE NO CLIENTS LEFT AFTER SPLICING, REMOVE SERVER FROM SERVERS OBJ
         }
       }
     }),
