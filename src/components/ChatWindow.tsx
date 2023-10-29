@@ -14,14 +14,16 @@ export default function ChatWindow() {
   // To "fix" this, we just force a re-render by changing the state of toggle
   const [toggle, setToggle] = useState(true);
   return (
-    <div>
-      <UserInfo />
-      <NewConnection 
-        servers={servers}
-        setServers={setServers}
-        setCurrentServer={setCurrentServer}
-        setToggle={setToggle}
-      />
+    <div className='w-screen h-screen flex flex-col'>
+      <div className='flex justify-between'>
+        <NewConnection 
+          servers={servers}
+          setServers={setServers}
+          setCurrentServer={setCurrentServer}
+          setToggle={setToggle}
+        />
+        <UserInfo />
+      </div>
       <ManageConnections
         servers={servers}
         setCurrentServer={setCurrentServer}

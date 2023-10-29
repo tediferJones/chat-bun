@@ -8,18 +8,17 @@ export default function ManageConnections({
   setCurrentServer: Function,
 }) {
   return (
-    <div>
-      <h1>ACTIVE SERVERS</h1>
-      <div>{Object.keys(servers).map((servername: string, i: number) => {
-        return <div key={`server${i}`}>
+    <div className='flex flex-wrap'>
+      {Object.keys(servers).map((servername: string, i: number) => {
+        return <div className='flex-1 flex justify-between p-2' key={`server${i}`}>
           <button onClick={() => {
             setCurrentServer(servername) 
           }}>{servername}</button>
           <button onClick={() => {
             servers[servername].close()
-          }}>Close</button>
+          }}>X</button>
         </div>
-      })}</div>
+      })}
     </div>
   )
 }

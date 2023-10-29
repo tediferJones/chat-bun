@@ -14,7 +14,7 @@ export default function Layout(props: { title: string; children: React.ReactNode
         <title>{props.title}</title>
         <link rel="stylesheet" href="/style.css" />
       </head>
-      <body>
+      <body className='bg-gray-900 text-white font-mono'>
         <div className="App" role="main">
             {props.children}
         </div>
