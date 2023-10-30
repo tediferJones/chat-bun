@@ -62,9 +62,9 @@ export default function NewConnection({
         })
         setCurrentServer(servername)
       }}>
-        <label htmlFor='servername'>Servername</label>
-        <input className='border-gray-500 border-4' id='servername' name='servername' type='text' required />
-        <button type='submit' className='bg-blue-500 p-4'>Connect</button>
+        <label className='pr-2' htmlFor='servername'>Servername</label>
+        <input className='p-1 bg-gray-600' id='servername' name='servername' type='text' required />
+        <button className='bg-blue-700 p-1 px-2' type='submit'>Connect</button>
         <div>{errors.map((error: string, i: number) => <div key={i}>{error}</div>)}</div>
       </form>
     </div>

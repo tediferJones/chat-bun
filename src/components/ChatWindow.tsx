@@ -15,7 +15,7 @@ export default function ChatWindow() {
   const [toggle, setToggle] = useState(true);
   return (
     <div className='w-screen h-screen flex flex-col'>
-      <div className='flex justify-between'>
+      <div className='flex justify-between p-4'>
         <NewConnection 
           servers={servers}
           setServers={setServers}

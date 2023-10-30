@@ -13,8 +13,10 @@ export default function Layout(props: { title: string; children: React.ReactNode
         <link rel="apple-touch-icon" href="/logo192.png" />
         <title>{props.title}</title>
         <link rel="stylesheet" href="/style.css" />
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu%20Mono'/>
+        <script src="https://kit.fontawesome.com/0db2e99dd7.js" crossOrigin="anonymous"></script>
       </head>
-      <body className='bg-gray-900 text-white font-mono'>
+      <body className='bg-gray-900 text-white font-default text-lg'>
         <div className="App" role="main">
             {props.children}
         </div>

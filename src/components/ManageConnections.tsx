@@ -10,13 +10,13 @@ export default function ManageConnections({
   return (
     <div className='flex flex-wrap'>
       {Object.keys(servers).map((servername: string, i: number) => {
-        return <div className='flex-1 flex justify-between p-2' key={`server${i}`}>
-          <button onClick={() => {
+        return <div className='flex-1 flex justify-between bg-gray-700 m-2 rounded-xl' key={`server${i}`}>
+          <button className='p-2 flex-1 text-left' onClick={() => {
             setCurrentServer(servername) 
           }}>{servername}</button>
-          <button onClick={() => {
+          <button className='ml-2 p-2 px-4 hover:bg-red-700 rounded-r-xl' onClick={() => {
             servers[servername].close()
-          }}>X</button>
+          }}><i className="fa-solid fa-xmark flex justify-center items-center"></i></button>
         </div>
       })}
     </div>

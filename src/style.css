@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-input {
-  @apply text-black;
+input,textarea {
+  @apply bg-gray-600;
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 1rem;
+    height: 20px;
+  }
+
+  /* .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+  } */
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    /* background: #eeeeee; */
+    @apply bg-gray-600;
+    @apply border-4;
+    @apply border-solid;
+    @apply border-gray-900;
+    @apply rounded-3xl;
+    /*
+    border-radius: 100vh;
+    border: 3px solid #000000;
+* */
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    /* background: #1D4ED8; */
+    @apply bg-gray-500
+  }
 }
