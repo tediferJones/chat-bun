@@ -26,6 +26,7 @@ export default function ChatWindow() {
       </div>
       <ManageConnections
         servers={servers}
+        currentServer={currentServer}
         setCurrentServer={setCurrentServer}
       />
       <ChatHistory

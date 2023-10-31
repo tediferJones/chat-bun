@@ -17,12 +17,12 @@ export default function UserInfo() {
   }, [refreshToggle])
 
   return (
-    <div className='flex'>
+    <div className='flex flex-wrap'>
       {status === null ? <h1>Loading...</h1> :
         status === false ? <a href='/login'>Login</a> :
           <>
             <h1 className='m-auto px-4'>{username}</h1>
-            <button className='px-4' onClick={() => {
+            <button className='px-4 bg-blue-700' onClick={() => {
               fetch('/api/logout')
                 .then((res: Response) => res.json())
                 .then((data: any) => {

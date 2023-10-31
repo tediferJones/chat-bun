@@ -20,6 +20,19 @@ import { Server, ServerWebSocket } from 'bun';
 //    - Clean up /api/getPort
 //    - Style it, we want to use tabs as the "server management" interface
 //    - Add salt to password verification for user auth
+//    - Do we want users to be able to pick a custom color for their name?
+//      - Would require re-working chatHistory container
+//      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
+//    - [ DONE ] Add an indicator for selected servername in ManageConnections component
+//    - Go over all potential errors, make sure things are working or responding correctly
+//      - Create errors message for 'You are already connected to this server'
+//        - Also setup form to clear new server input on submit
+//      - Fix error messages for new connection expanding the userInfo container vertically
+//    - Clean up comments in src/style.css
+//    - Add some kind of backup/default monospace font
+//    - Edit chatHistory component,
+//      - Scroll to bottom when new message is sent
+//      - Event should only fire if user is already scrolled to the bottom of chatHistory
 
 // THIS CAN BE REPLACED WITH TYPESCRIPT MAGIC, see here: https://bun.sh/docs/runtime/typescript#path-mapping
 // All paths are based on the location of this file (the file that runs the server)

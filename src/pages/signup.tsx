@@ -4,7 +4,9 @@ import Signup from '../components/Signup'
 export default function signup() {
   return (
     <Layout title='Signup'>
-      <Signup></Signup>
+      <div className='w-screen h-screen flex justify-center items-center'>
+        <Signup></Signup>
+      </div>
     </Layout>
   )
 }

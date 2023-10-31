@@ -4,12 +4,18 @@
 
 input,textarea {
   @apply bg-gray-600;
+  @apply rounded-full;
+  @apply px-2;
+}
+
+button {
+  @apply rounded-full;
 }
 
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 1rem;
-    height: 20px;
+    height: 1rem;
   }
 
   /* .scrollbar::-webkit-scrollbar-track {
@@ -19,10 +25,11 @@ input,textarea {
 
   .scrollbar::-webkit-scrollbar-thumb {
     /* background: #eeeeee; */
-    @apply bg-gray-600;
+    @apply bg-gray-700;
     @apply border-4;
     @apply border-solid;
-    @apply border-gray-900;
+    /* @apply border-gray-900; */
+    @apply border-black;
     @apply rounded-3xl;
     /*
     border-radius: 100vh;
@@ -32,6 +39,23 @@ input,textarea {
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
     /* background: #1D4ED8; */
+    @apply bg-gray-500
+  }
+
+  .innerScrollbar::-webkit-scrollbar {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .innerScrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-700;
+    @apply border-4;
+    @apply border-solid;
+    @apply border-gray-600;
+    @apply rounded-3xl;
+  }
+
+  .innerScrollbar::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-500
   }
 }
