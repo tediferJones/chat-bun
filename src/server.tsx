@@ -1,6 +1,7 @@
 import { renderToReadableStream } from 'react-dom/server';
 import db from './database';
 import { Server, ServerWebSocket } from 'bun';
+import { BackendServers } from './types';
 
 // Notes on layers folder:
 // How do we make sure the api will only take requests from logged in users
@@ -33,6 +34,12 @@ import { Server, ServerWebSocket } from 'bun';
 //    - Edit chatHistory component,
 //      - Scroll to bottom when new message is sent
 //      - Event should only fire if user is already scrolled to the bottom of chatHistory
+//    - Figure out how to backup this database
+//      - Can we use max's NAS as a backup location?
+//    - Make all dev assets local, i.e. download fonts and icons to the public folder 
+//    - Try to get rid of toggle state in ChatWindow component, try sticking everything inside the setServers call
+//    - Make sure servers get deleted from servers object when there are no clients
+//    - Extract correct domain name on client instead of having localhost hardcoded
 
 // THIS CAN BE REPLACED WITH TYPESCRIPT MAGIC, see here: https://bun.sh/docs/runtime/typescript#path-mapping
 // All paths are based on the location of this file (the file that runs the server)
@@ -99,10 +106,11 @@ setInterval(() => {
 }, 1000*60*60*24);
 
 // We should setup the websocket server somewhere around here
-const servers: { [key: string]: {
-  server: Server,
-  clients: ServerWebSocket[],
-}} = {};
+// const servers: { [key: string]: {
+//   server: Server,
+//   clients: ServerWebSocket[],
+// }} = {};
+const servers: BackendServers = {};
 
 // Run server to serve HTML to user
 const server = Bun.serve({

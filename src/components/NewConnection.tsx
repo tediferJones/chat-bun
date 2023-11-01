@@ -43,7 +43,7 @@ export default function NewConnection({
         }
         setErrors([])
 
-        // Move all of this into the setServers call
+        // Set up new web socket connection
         const ws = new WebSocket(`ws://localhost:${port}`) as ServerObj;
         ws.servername = servername;
         ws.chatHistory = [];
