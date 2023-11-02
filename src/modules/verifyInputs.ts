@@ -18,7 +18,7 @@ export default function verifyInputs(inputs: { [key: string]: string }) {
     const value = inputs[input]
     if (!(constraints.min <= value.length && value.length <= constraints.max)) {
       result.isValid = false;
-      result.errors.push(`${input} must be between ${constraints.min} and ${constraints.max}`)
+      result.errors.push(`${input} must be between ${constraints.min} and ${constraints.max} characters long`)
     }
   })
 

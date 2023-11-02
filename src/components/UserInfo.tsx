@@ -20,7 +20,7 @@ export default function UserInfo() {
     <div className='flex flex-wrap'>
       {status === null ? <h1>Loading...</h1> :
         status === false ? <a href='/login'>Login</a> :
-          <>
+          <div className='flex'>
             <h1 className='m-auto px-4'>{username}</h1>
             <button className='px-4 bg-blue-700' onClick={() => {
               fetch('/api/logout')
@@ -28,13 +28,12 @@ export default function UserInfo() {
                 .then((data: any) => {
                   console.log(data)
                   if (data.status) {
-                    // @ts-ignore
                     window.location.href = '/login'
                   }
                 })
               setRefreshToggle(!refreshToggle)
             }}>Logout</button>
-          </>
+          </div>
       }
     </div>
   )

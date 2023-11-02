@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Servers } from '../types'
-import UserInfo from './UserInfo';
+// import UserInfo from './UserInfo';
 import NewConnection from './NewConnection';
 import ChatHistory from './ChatHistory';
 import ManageConnections from './ManageConnections';
-// import NewMessage from './NewMessage';
 
 export default function ChatWindow() {
   const [servers, setServers] = useState<Servers>({})
@@ -13,17 +12,17 @@ export default function ChatWindow() {
   // Changing the deeply nested state of servers doesn't trigger a re-render,
   // To "fix" this, we just force a re-render by changing the state of toggle
   const [toggle, setToggle] = useState(true);
+  const chatRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className='w-screen h-screen flex flex-col'>
-      <div className='flex justify-between p-4'>
-        <NewConnection 
-          servers={servers}
-          setServers={setServers}
-          setCurrentServer={setCurrentServer}
-          setToggle={setToggle}
-        />
-        <UserInfo />
-      </div>
+      <NewConnection 
+        servers={servers}
+        setServers={setServers}
+        setCurrentServer={setCurrentServer}
+        setToggle={setToggle}
+        chatRef={chatRef}
+      />
       <ManageConnections
         servers={servers}
         currentServer={currentServer}
@@ -32,6 +31,7 @@ export default function ChatWindow() {
       <ChatHistory
         servers={servers}
         currentServer={currentServer}
+        chatRef={chatRef}
       />
       {/*
       <NewMessage

@@ -28,7 +28,7 @@ export default function ManageConnections({
             const serverIndex = servernames.indexOf(servername)
             const newCurrentServer = servernames[serverIndex + 1] || servernames[serverIndex - 1]
             
-            if (newCurrentServer) {
+            if (newCurrentServer && servername === currentServer) {
               setCurrentServer(newCurrentServer)
             }
 

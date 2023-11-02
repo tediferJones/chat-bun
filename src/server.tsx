@@ -13,33 +13,43 @@ import { BackendServers } from './types';
 //
 // TO-DO:
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
+//    - Add more types to types file
+//      - GET RID OF ALL 'ANY' TYPES IN THIS PROJECT
+//    - Add salt to password verification for user auth
+//      - Passwords are not automatically salted, so this will have to be added manually
+//    - Do we want users to be able to pick a custom color for their name?
+//      - Would require re-working chatHistory container
+//      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
+//    - Go over all potential errors, make sure things are working or responding correctly
+//      - Create errors message for 'You are already connected to this server'
+//        - Also setup form to clear new server input on submit
+//      - [ DONE ] Fix error messages for new connection expanding the userInfo container vertically
+//      - Make sure constraints in verifyInputs are reasonable (passwords should be at least 8 characters, etc...)
+//    - Clean up comments in src/style.css
+//    - [ DONE ] Edit chatHistory component,
+//      - [ DONE ] Scroll to bottom when new message is sent
+//      - [ DONE ] Event should only fire if user is already scrolled to the bottom of chatHistory
+//    - Figure out how to backup this database
+//      - Can we use max's NAS as a backup location?
+//      - This doesn't matter too much for this project but it may matter more on other projects
+//    - Make all dev assets local, i.e. download fonts and icons to the public folder 
+//      - Add some kind of backup/default monospace font
+//    - Extract correct domain name on client instead of having localhost hardcoded
+//    - DELETE ALL console.log() STATEMENTS
+//    - Clean up this file (server.tsx)
+//    - Delete unused components i.e. NewMessages,oldChatWindow 
+//    - [ DONE ] Make sure users cant send blanks messages that are just full of spaces/tabs/newlineChars
+//    - Consider cleaning up or re-oganizing NewConnections component
 //    - [ DONE ] Update login and signup pages to use forms
 //      - [ DONE ] This should allow us to remove useRef 
 //    - [ DONE ] Rename all api routes to .ts instead of .tsx
 //    - [ DONE ] Add input validation to client and server
-//    - Add more types to types file
-//    - Clean up /api/getPort
-//    - Style it, we want to use tabs as the "server management" interface
-//    - Add salt to password verification for user auth
-//    - Do we want users to be able to pick a custom color for their name?
-//      - Would require re-working chatHistory container
-//      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
+//    - [ DONE ] Clean up /api/getPort
+//    - [ DONE ] Style it, we want to use tabs as the "server management" interface
 //    - [ DONE ] Add an indicator for selected servername in ManageConnections component
-//    - Go over all potential errors, make sure things are working or responding correctly
-//      - Create errors message for 'You are already connected to this server'
-//        - Also setup form to clear new server input on submit
-//      - Fix error messages for new connection expanding the userInfo container vertically
-//    - Clean up comments in src/style.css
-//    - Add some kind of backup/default monospace font
-//    - Edit chatHistory component,
-//      - Scroll to bottom when new message is sent
-//      - Event should only fire if user is already scrolled to the bottom of chatHistory
-//    - Figure out how to backup this database
-//      - Can we use max's NAS as a backup location?
-//    - Make all dev assets local, i.e. download fonts and icons to the public folder 
-//    - Try to get rid of toggle state in ChatWindow component, try sticking everything inside the setServers call
-//    - Make sure servers get deleted from servers object when there are no clients
-//    - Extract correct domain name on client instead of having localhost hardcoded
+//    - [ TRIED TO ] Try to get rid of toggle state in ChatWindow component, try sticking everything inside the setServers call
+//      - [ DONE ] Sticking everything in setServers call doesnt work, and i dont know what else to try
+//    - [ DONE ] Make sure servers get deleted from servers object when there are no clients
 
 // THIS CAN BE REPLACED WITH TYPESCRIPT MAGIC, see here: https://bun.sh/docs/runtime/typescript#path-mapping
 // All paths are based on the location of this file (the file that runs the server)
