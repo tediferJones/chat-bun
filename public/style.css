@@ -765,10 +765,6 @@ video {
   text-align: center;
 }
 
-.font-default {
-  font-family: Ubuntu Mono;
-}
-
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -797,31 +793,19 @@ video {
   height: 1rem;
 }
 
-/* .scrollbar::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: #f7f4ed;
-  } */
-
 .scrollbar::-webkit-scrollbar-thumb {
-  /* background: #eeeeee; */
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
   border-width: 4px;
   border-style: solid;
-  /* @apply border-gray-900; */
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
   border-radius: 1.5rem;
-  /*
-    border-radius: 100vh;
-    border: 3px solid #000000;
-* */
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
-  /* background: #1D4ED8; */
   --tw-bg-opacity: 1;
-  background-color: rgb(107 114 128 / var(--tw-bg-opacity))
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
 .innerScrollbar::-webkit-scrollbar {
@@ -854,6 +838,10 @@ input,textarea {
 
 button {
   border-radius: 9999px;
+}
+
+body {
+  font-family: 'Ubuntu Mono', 'Courier New', Courier, monospace;
 }
 
 .hover\:bg-red-700:hover {

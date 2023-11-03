@@ -17,8 +17,17 @@ interface BackendServers {
   }
 }
 
+interface ResBody {
+  // status?: boolean,
+  // errors?: string[],
+  errors: string[],
+  username?: string,
+  port?: number,
+}
+
 export type {
   ServerObj,
   Servers,
   BackendServers,
+  ResBody,
 }

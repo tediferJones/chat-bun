@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ResBody } from '../types';
 
 export default function ProtectPage({ children }: any) {
   const [isVerified, setIsVerified] = useState(false)
@@ -6,9 +7,8 @@ export default function ProtectPage({ children }: any) {
   useEffect(() => {
     fetch('/api/verify')
       .then((res: Response) => res.json())
-      .then((data: any) => {
-        // @ts-ignore
-        data.status ? setIsVerified(true) : window.location.href = '/login'
+      .then((data: ResBody) => {
+        data.username ? setIsVerified(true) : window.location.href = '/login'
       })
   }, [])
 

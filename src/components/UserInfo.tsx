@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ResBody } from '../types';
 
 export default function UserInfo() {
   const [status, setStatus] = useState<null | true | false>(null);
@@ -8,9 +9,9 @@ export default function UserInfo() {
   useEffect(() => {
     fetch('/api/verify')
       .then((res: Response) => res.json())
-      .then((data: any) => {
-        setStatus(data.status);
-        if (data.status) {
+      .then((data: ResBody) => {
+        setStatus(!!data.username);
+        if (data.username) {
           setUsername(data.username)
         }
       })
@@ -25,9 +26,8 @@ export default function UserInfo() {
             <button className='px-4 bg-blue-700' onClick={() => {
               fetch('/api/logout')
                 .then((res: Response) => res.json())
-                .then((data: any) => {
-                  console.log(data)
-                  if (data.status) {
+                .then((data: ResBody) => {
+                  if (!data.errors.length) {
                     window.location.href = '/login'
                   }
                 })

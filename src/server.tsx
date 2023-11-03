@@ -15,31 +15,36 @@ import { BackendServers } from './types';
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
 //    - Add more types to types file
 //      - GET RID OF ALL 'ANY' TYPES IN THIS PROJECT
+//      - Try to get rid of "status" attr on ResData type
+//        - It is fairly vague, and we can infer that if there are no errors, status should be true
 //    - Add salt to password verification for user auth
 //      - Passwords are not automatically salted, so this will have to be added manually
 //    - Do we want users to be able to pick a custom color for their name?
 //      - Would require re-working chatHistory container
 //      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
 //    - Go over all potential errors, make sure things are working or responding correctly
-//      - Create errors message for 'You are already connected to this server'
-//        - Also setup form to clear new server input on submit
-//      - [ DONE ] Fix error messages for new connection expanding the userInfo container vertically
 //      - Make sure constraints in verifyInputs are reasonable (passwords should be at least 8 characters, etc...)
-//    - Clean up comments in src/style.css
-//    - [ DONE ] Edit chatHistory component,
-//      - [ DONE ] Scroll to bottom when new message is sent
-//      - [ DONE ] Event should only fire if user is already scrolled to the bottom of chatHistory
+//      - This would be a good time to add salt to passwords, we'll have to clear the DB anyways
+//      - [ DONE ] Create errors message for 'You are already connected to this server'
+//        - [ DONE ] Also setup form to clear new server input on submit
+//      - [ DONE ] Fix error messages for new connection expanding the userInfo container vertically
 //    - Figure out how to backup this database
 //      - Can we use max's NAS as a backup location?
 //      - This doesn't matter too much for this project but it may matter more on other projects
-//    - Make all dev assets local, i.e. download fonts and icons to the public folder 
-//      - Add some kind of backup/default monospace font
-//    - Extract correct domain name on client instead of having localhost hardcoded
+//    - Make all dev assets local, i.e. download fonts and icons to the public folder
+//      - [ DONE ] Add some kind of backup/default monospace font
 //    - DELETE ALL console.log() STATEMENTS
 //    - Clean up this file (server.tsx)
 //    - Delete unused components i.e. NewMessages,oldChatWindow 
-//    - [ DONE ] Make sure users cant send blanks messages that are just full of spaces/tabs/newlineChars
 //    - Consider cleaning up or re-oganizing NewConnections component
+//    - Add type='password' to login/signup forms, also add another input to make sure passwords match
+//    - Change all .then() calls to async functions with await
+//    - [ DONE ] Clean up comments in src/style.css
+//    - [ DONE ] Edit chatHistory component,
+//      - [ DONE ] Scroll to bottom when new message is sent
+//      - [ DONE ] Event should only fire if user is already scrolled to the bottom of chatHistory
+//    - [ DONE ] Extract correct domain name on client instead of having localhost hardcoded
+//    - [ DONE ] Make sure users cant send blanks messages that are just full of spaces/tabs/newlineChars
 //    - [ DONE ] Update login and signup pages to use forms
 //      - [ DONE ] This should allow us to remove useRef 
 //    - [ DONE ] Rename all api routes to .ts instead of .tsx

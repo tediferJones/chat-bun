@@ -2,13 +2,12 @@ import db from '../database';
 import getCookies from './getCookies';
 
 export default function verifyUser(req: Request) {
-  const result = {
+  const result: { status: boolean, username: string } = {
     status: false,
     username: '',
   }
 
   const { sessionToken } = getCookies(req)
-  // const token = sessionToken
 
   if (sessionToken) {
     const dbResult = db.query<{
@@ -24,8 +23,6 @@ export default function verifyUser(req: Request) {
       result.username = dbResult.username
     }
   }
-
-  // console.log(db.query('SELECT * FROM sessions').all())
 
   return result
 }

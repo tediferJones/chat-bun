@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import { Servers } from '../types'
-// import UserInfo from './UserInfo';
 import NewConnection from './NewConnection';
 import ChatHistory from './ChatHistory';
 import ManageConnections from './ManageConnections';
@@ -33,12 +32,6 @@ export default function ChatWindow() {
         currentServer={currentServer}
         chatRef={chatRef}
       />
-      {/*
-      <NewMessage
-        servers={servers}
-        currentServer={currentServer}
-      />
-      */}
     </div>
   )
 }

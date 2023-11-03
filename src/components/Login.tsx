@@ -2,6 +2,7 @@
 /// <reference lib="dom.iterable" />
 import { useState } from 'react';
 import verifyInputs from '../modules/verifyInputs';
+import { ResBody } from '../types';
 
 export default function Login() {
   const [errorMsg, setErrorMsg] = useState<string[]>([]);
@@ -26,7 +27,7 @@ export default function Login() {
       },
       body: JSON.stringify(inputs)
     }).then((res: Response) => res.json())
-      .then((data: any) => data.status ? window.location.href = '/' : setErrorMsg(data.errors))
+      .then((data: ResBody) => data.errors.length === 0 ? window.location.href = '/' : setErrorMsg(data.errors))
   }
 
   return (

@@ -12,33 +12,25 @@ button {
   @apply rounded-full;
 }
 
+body {
+  font-family: 'Ubuntu Mono', 'Courier New', Courier, monospace;
+}
+
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 1rem;
     height: 1rem;
   }
 
-  /* .scrollbar::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: #f7f4ed;
-  } */
-
   .scrollbar::-webkit-scrollbar-thumb {
-    /* background: #eeeeee; */
     @apply bg-gray-700;
     @apply border-4;
     @apply border-solid;
-    /* @apply border-gray-900; */
     @apply border-black;
     @apply rounded-3xl;
-    /*
-    border-radius: 100vh;
-    border: 3px solid #000000;
-* */
   }
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
-    /* background: #1D4ED8; */
     @apply bg-gray-500
   }
 

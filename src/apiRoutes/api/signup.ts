@@ -1,16 +1,16 @@
 import db from '../../database';
 import verifyInputs from '../../modules/verifyInputs';
+import { ResBody } from '../../types';
 
 export async function POST(req: Request) {
   const { username, password } = await req.json();
-  const resData: { status: boolean, errors: string[] } = {
-    status: false,
-    errors: []
+  const resData: ResBody = {
+    errors: [],
   }
 
   const validation = verifyInputs({ username, password })
   if (!validation.isValid) {
-    resData.errors = validation.errors
+    resData.errors.push(...validation.errors)
     return new Response(JSON.stringify(resData))
   }
 
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   // Validate that username does not already exist
   const existingUsername = db.query('SELECT * FROM users WHERE username = $username').get({ $username: username })
   if (existingUsername) {
-    resData.errors = ['Username already exists']
+    resData.errors.push('Username already exists')
     return new Response(JSON.stringify(resData))
   }
 
@@ -28,8 +28,5 @@ export async function POST(req: Request) {
       $password: await Bun.password.hash(password),
     })
 
-  // console.log(db.query('SELECT * FROM users').all())
-
-  resData.status = true;
   return new Response(JSON.stringify(resData))
 }

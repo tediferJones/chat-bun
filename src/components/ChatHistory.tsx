@@ -10,7 +10,8 @@ export default function ChatHistory({
   currentServer: string,
   chatRef: RefObject<HTMLDivElement>,
 }) {
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   return (
     <>
       <div className='flex-1 overflow-auto mx-4 px-4 py-2 scrollbar bg-black rounded-xl'
@@ -26,13 +27,14 @@ export default function ChatHistory({
       </div>
       <form className='flex m-4' 
         ref={formRef}
-        onSubmit={(e: any) => {
+        onSubmit={(e) => {
           e.preventDefault();
-          const message: string = e.target.message.value.trim();
+          if (!inputRef.current) return;
+          const message: string = inputRef.current.value.trim();
           if (message && Object.keys(servers).includes(currentServer)) {
             servers[currentServer].send(message);
           }
-          e.target.message.value = '';
+          inputRef.current.value = '';
         }}
       >
         <textarea className='flex-1 p-2 px-4 resize-none break-words rounded-l-3xl rounded-r-none innerScrollbar'
@@ -40,6 +42,7 @@ export default function ChatHistory({
           rows={2}
           placeholder='Press Ctrl + Enter to send'
           required
+          ref={inputRef}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.ctrlKey) {
               formRef.current?.submitBtn.click();
