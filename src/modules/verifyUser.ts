@@ -1,8 +1,9 @@
 import db from '../database';
 import getCookies from './getCookies';
+import { UserAuth } from '../types';
 
-export default function verifyUser(req: Request) {
-  const result: { status: boolean, username: string } = {
+export default function verifyUser(req: Request): UserAuth {
+  const result: UserAuth = {
     status: false,
     username: '',
   }

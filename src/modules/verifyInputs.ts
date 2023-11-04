@@ -1,11 +1,13 @@
-export default function verifyInputs(inputs: { [key: string]: string }) {
+import inputConstraints from "./inputConstraints";
+
+export default function verifyInputs(inputs: { [key: string]: string }): { isValid: boolean, errors: string[] } {
   // This is really only good for length checks, 
   // If you want more in-depth checking, convert each field to a function
-  const validators: { [key: string]: { min: number, max: number } } = {
-    username: { min: 4, max: 32 },
-    password: { min: 4, max: 32 },
-    servername: { min: 4, max: 32 },
-  }
+  // const validators: { [key: string]: { min: number, max: number } } = {
+  //   username: { min: 4, max: 32 },
+  //   password: { min: 4, max: 32 },
+  //   servername: { min: 4, max: 32 },
+  // }
 
   let result: { isValid: boolean, errors: string[] } = {
     isValid: true,
@@ -14,13 +16,14 @@ export default function verifyInputs(inputs: { [key: string]: string }) {
 
   Object.keys(inputs).forEach((input: string) => {
     // console.log(input)
-    const constraints = validators[input]
-    const value = inputs[input]
-    if (!(constraints.min <= value.length && value.length <= constraints.max)) {
+    // const constraints = validators[input]
+    const constraints = inputConstraints[input];
+    const value = inputs[input];
+    if (!(constraints.minLength <= value.length && value.length <= constraints.maxLength)) {
       result.isValid = false;
-      result.errors.push(`${input} must be between ${constraints.min} and ${constraints.max} characters long`)
+      result.errors.push(`${input} must be between ${constraints.minLength} and ${constraints.maxLength} characters long`);
     }
   })
 
-  return result
+  return result;
 }

@@ -2,38 +2,36 @@
 /// <reference lib="dom.iterable" />
 import { useState } from 'react';
 import verifyInputs from '../modules/verifyInputs';
+import getFormInputs from '../modules/getFormInputs';
 import { ResBody } from '../types';
 
 export default function Login() {
   const [errorMsg, setErrorMsg] = useState<string[]>([]);
-
-  function clickHandler(e: any) {
-    e.preventDefault();
-    const inputs = {
-      username: e.target.username.value,
-      password: e.target.password.value,
-    }
-    const validation = verifyInputs(inputs);
-
-    if (!validation.isValid) {
-      setErrorMsg(validation.errors)
-      return
-    }
-
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(inputs)
-    }).then((res: Response) => res.json())
-      .then((data: ResBody) => data.errors.length === 0 ? window.location.href = '/' : setErrorMsg(data.errors))
-  }
-
   return (
     <div className='p-4 bg-gray-800 rounded-3xl'>
       <h1 className='mb-4'>Sign into existing account</h1>
-      <form className='flex flex-col gap-4' onSubmit={clickHandler}>
+      <form className='flex flex-col gap-4' onSubmit={async(e) => {
+        e.preventDefault();
+        const inputs = getFormInputs(e.target as HTMLFormElement);
+        const validation = verifyInputs(inputs);
+        if (!validation.isValid) {
+          return setErrorMsg(validation.errors)
+        }
+
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(inputs)
+        });
+
+        const data: ResBody = await res.json();
+        if (data.errors.length) {
+          return setErrorMsg(data.errors)
+        } 
+        window.location.href = '/'
+      }}>
         <label className='flex justify-between' htmlFor='username'>
           Username:
           <input id='username' name='username' type='text' required />

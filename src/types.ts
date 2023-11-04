@@ -18,11 +18,18 @@ interface BackendServers {
 }
 
 interface ResBody {
-  // status?: boolean,
-  // errors?: string[],
   errors: string[],
   username?: string,
   port?: number,
+}
+
+interface FormInputs {
+  [key: string]: string,
+}
+
+interface UserAuth {
+  status: boolean,
+  username: string,
 }
 
 export type {
@@ -30,4 +37,6 @@ export type {
   Servers,
   BackendServers,
   ResBody,
+  FormInputs,
+  UserAuth,
 }

@@ -1,5 +1,6 @@
 import { Servers } from '../types'
 import { RefObject, useRef } from 'react';
+import getFormInputs from '../modules/getFormInputs';
 
 export default function ChatHistory({ 
   servers,
@@ -11,7 +12,6 @@ export default function ChatHistory({
   chatRef: RefObject<HTMLDivElement>,
 }) {
   const formRef = useRef<HTMLFormElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
   return (
     <>
       <div className='flex-1 overflow-auto mx-4 px-4 py-2 scrollbar bg-black rounded-xl'
@@ -29,12 +29,13 @@ export default function ChatHistory({
         ref={formRef}
         onSubmit={(e) => {
           e.preventDefault();
-          if (!inputRef.current) return;
-          const message: string = inputRef.current.value.trim();
+          const form = e.target as HTMLFormElement;
+          const inputs = getFormInputs(form)
+          const message: string = inputs.message.trim();
           if (message && Object.keys(servers).includes(currentServer)) {
             servers[currentServer].send(message);
           }
-          inputRef.current.value = '';
+          form.reset()
         }}
       >
         <textarea className='flex-1 p-2 px-4 resize-none break-words rounded-l-3xl rounded-r-none innerScrollbar'
@@ -42,7 +43,6 @@ export default function ChatHistory({
           rows={2}
           placeholder='Press Ctrl + Enter to send'
           required
-          ref={inputRef}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.ctrlKey) {
               formRef.current?.submitBtn.click();

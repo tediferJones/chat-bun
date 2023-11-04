@@ -13,10 +13,12 @@ import { BackendServers } from './types';
 //
 // TO-DO:
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
-//    - Add more types to types file
-//      - GET RID OF ALL 'ANY' TYPES IN THIS PROJECT
-//      - Try to get rid of "status" attr on ResData type
-//        - It is fairly vague, and we can infer that if there are no errors, status should be true
+//    - [ DONE ] Add more types to types file
+//      - [ DONE ] GET RID OF ALL 'ANY' TYPES IN THIS PROJECT
+//      - [ DONE ] Add a type for getFormData, it should be used everywhere that we call this function (client side and server side)
+//      - [ DONE ] Add a type for verifyUser module, use it everywhere that we call this function (client side and server side)
+//      - [ DONE ] Try to get rid of "status" attr on ResData type
+//        - [ DONE ] It is fairly vague, and we can infer that if there are no errors, status should be true
 //    - Add salt to password verification for user auth
 //      - Passwords are not automatically salted, so this will have to be added manually
 //    - Do we want users to be able to pick a custom color for their name?
@@ -37,8 +39,10 @@ import { BackendServers } from './types';
 //    - Clean up this file (server.tsx)
 //    - Delete unused components i.e. NewMessages,oldChatWindow 
 //    - Consider cleaning up or re-oganizing NewConnections component
-//    - Add type='password' to login/signup forms, also add another input to make sure passwords match
+//    - Add type='password' to login/signup forms, 
+//        - also add another input to signup page to make sure passwords match
 //    - Change all .then() calls to async functions with await
+//    - Fix login/signup containers, errors extend the container horizontally, they should wrap instead
 //    - [ DONE ] Clean up comments in src/style.css
 //    - [ DONE ] Edit chatHistory component,
 //      - [ DONE ] Scroll to bottom when new message is sent

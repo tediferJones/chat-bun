@@ -22,6 +22,8 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify(resData))
   }
 
+  const testToken = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64')
+  console.log(testToken)
   db.query('INSERT INTO users (username, password) VALUES ($username, $password)')
     .run({
       $username: username,
