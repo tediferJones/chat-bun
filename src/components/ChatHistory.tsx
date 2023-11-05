@@ -19,7 +19,7 @@ export default function ChatHistory({
         tabIndex={0}
         ref={chatRef}
       >
-        {!Object.keys(servers).includes(currentServer) ? 'Please connect to a chat room' :
+        {!Object.keys(servers).includes(currentServer) ? <div className='w-full h-full flex justify-center items-center text-xl'>Please connect to a chat room</div>:
           servers[currentServer].chatHistory.map((msg: string, i: number) => {
             return <div className='break-words' key={i}>{msg}</div>
           })

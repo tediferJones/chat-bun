@@ -42,6 +42,7 @@ import { BackendServers } from './types';
 //    - Add type='password' to login/signup forms, 
 //        - also add another input to signup page to make sure passwords match
 //    - Change all .then() calls to async functions with await
+//    - Delete testToken var from /api/signup, or use it as salt for password hashing
 //    - Fix login/signup containers, errors extend the container horizontally, they should wrap instead
 //    - [ DONE ] Clean up comments in src/style.css
 //    - [ DONE ] Edit chatHistory component,

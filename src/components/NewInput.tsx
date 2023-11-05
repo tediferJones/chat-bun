@@ -12,9 +12,17 @@ export default function NewInput({
     {inputName[0].toUpperCase() + inputName.slice(1) + ':'}
     <input id={inputName} 
       name={inputName} 
-      {...inputConstraints[inputName]}
       type='text' 
+      onInput={(e) => {
+        e.currentTarget.setCustomValidity('')
+      }}
       required 
+      {...inputConstraints[inputName]}
     />
+      {/*
+      onInvalid={(e) => {
+        console.log('FAILED VALIDATION')
+      }}
+      */}
   </label>
 }

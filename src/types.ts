@@ -18,7 +18,8 @@ interface BackendServers {
 }
 
 interface ResBody {
-  errors: string[],
+  // errors: string[],
+  errors: { [key: string]: string },
   username?: string,
   port?: number,
 }
