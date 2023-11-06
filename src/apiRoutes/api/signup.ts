@@ -1,5 +1,5 @@
 import db from '../../database';
-import verifyInputs from '../../modules/verifyInputs';
+import { verifyInputs } from '../../modules/inputValidation';
 import { ResBody } from '../../types';
 
 export async function POST(req: Request) {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   const validation = verifyInputs({ username, password })
   if (!validation.isValid) {
-    // resData.errors.push(...validation.errors)
+    // This is pretty sloppy, try to not make copies if possible
     resData.errors = {
       ...resData.errors,
       ...validation.errors,
@@ -22,7 +22,6 @@ export async function POST(req: Request) {
   // Validate that username does not already exist
   const existingUsername = db.query('SELECT * FROM users WHERE username = $username').get({ $username: username })
   if (existingUsername) {
-    // resData.errors.push('Username already exists')
     resData.errors.username = 'Username already exists'
     return new Response(JSON.stringify(resData))
   }

@@ -27,7 +27,8 @@ export default function UserInfo() {
               fetch('/api/logout')
                 .then((res: Response) => res.json())
                 .then((data: ResBody) => {
-                  if (!data.errors.length) {
+                  // if (!data.errors.length) {
+                  if (!Object.keys(data.errors).length) {
                     window.location.href = '/login'
                   }
                 })

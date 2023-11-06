@@ -1,9 +1,11 @@
-import { RefObject, useState } from 'react';
+import { RefObject } from 'react';
 import { ResBody, ServerObj, Servers } from '../types';
-import verifyInputs from '../modules/verifyInputs';
+import { verifyInputs, viewErrors } from '../modules/inputValidation';
 import getFormInputs from '../modules/getFormInputs';
 import UserInfo from './UserInfo';
-
+import NewInput from './NewInput';
+// import verifyInputs from '../modules/verifyInputs';
+// import viewErrors from '../modules/viewErrors';
 export default function NewConnection({ 
   servers, 
   setServers, 
@@ -17,7 +19,6 @@ export default function NewConnection({
   setCurrentServer: Function,
   chatRef: RefObject<HTMLDivElement>,
 }) {
-  const [errors, setErrors] = useState<string[]>([]);
   return (
     <div className='p-4'>
       <div className='flex justify-between'>
@@ -33,9 +34,9 @@ export default function NewConnection({
             return;
           }
 
-          const validation = verifyInputs({ servername });
-          if (!validation.isValid) {
-            return setErrors(validation.errors);
+          const validity = verifyInputs({ servername });
+          if (!validity.isValid) {
+            return viewErrors(form, validity.errors)
           }
 
           // Fetch port from server
@@ -49,10 +50,10 @@ export default function NewConnection({
           const { errors, port }: ResBody = await res.json();
 
           // If no errors in response, setup new websocket
-          if (errors.length) {
-            return setErrors(errors);
+          if (Object.keys(errors).length) {
+            viewErrors(form, errors)
+            return;
           }
-          setErrors([]);
           form.reset();
 
           // Set up new web socket connection
@@ -84,13 +85,11 @@ export default function NewConnection({
           });
           setCurrentServer(servername);
         }}>
-          <label className='px-2' htmlFor='servername'>Servername</label>
-          <input className='p-1 px-2 bg-gray-600' id='servername' name='servername' type='text' required />
+          <NewInput inputName='servername' className='px-2' inputClassName='p-1 px-2 bg-gray-600'/>
           <button className='bg-blue-700 p-1 px-4 mx-4' type='submit'>Connect</button>
         </form>
         <UserInfo />
       </div>
-      <div className='text-red-700 font-bold px-2'>{errors.map((error: string, i: number) => <div className='pt-4' key={i}>{error}</div>)}</div>
     </div>
   )
 }

@@ -6,11 +6,13 @@ export async function POST(req: Request, servers: BackendServers) {
   const userAuth = verifyUser(req);
   const resData: ResBody = {
     port: 0,
-    errors: [],
+    errors: {},
   }
 
+  // We should probably verify user inputs somewhere around here
+
   if (!userAuth.status) {
-    resData.errors?.push('You must login to access this route');
+    resData.errors.auth = 'You must login to access this route';
     return new Response(JSON.stringify(resData));
   }
 
@@ -32,7 +34,7 @@ export async function POST(req: Request, servers: BackendServers) {
   while (activePorts.includes(resData.port)) resData.port++
 
   if (resData.port > 65535) {
-    resData.errors?.push('All servers are active, no empty ports left');
+    resData.errors.port = 'No ports available, try again later';
     return new Response(JSON.stringify(resData));
   }
 

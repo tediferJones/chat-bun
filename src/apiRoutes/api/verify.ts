@@ -4,7 +4,8 @@ import { ResBody } from "../../types";
 export function GET(req: Request) {
   const { status, username } = verifyUser(req);
   const resData: ResBody = {
-    errors: [],
+    // errors: [],
+    errors: {},
   }
 
   if (status) {

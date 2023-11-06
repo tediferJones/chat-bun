@@ -5,14 +5,15 @@ import { ResBody } from '../../types';
 export function GET(req: Request) {
   const { sessionToken } = getCookies(req);
   const resData: ResBody = {
-    errors: [],
+    errors: {},
   }
 
   // Delete associated session token from DB, and set cookie expiration to some date in the past
   if (sessionToken) {
     db.query('DELETE FROM sessions WHERE token = $token').run({ $token: sessionToken });
   } else {
-    resData.errors.push('No session token found');
+    // resData.errors.push('No session token found');
+    resData.errors.token = 'Token not found'
   }
 
   return new Response(JSON.stringify(resData), {

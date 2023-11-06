@@ -1,11 +1,11 @@
 import db from '../../database';
-import verifyInputs from '../../modules/verifyInputs';
+import { verifyInputs } from '../../modules/inputValidation';
 import { ResBody } from '../../types';
 
 export async function POST(req: Request) {
   const { username, password }: { username: string, password: string } = await req.json()
   const resData: ResBody = {
-    errors: [],
+    errors: {},
   }
   const validation = verifyInputs({ username, password })
   if (!validation.isValid) {
@@ -19,19 +19,18 @@ export async function POST(req: Request) {
 
   // If db result contains no password, the username does not exist
   if (!hashedPassword?.password) {
-    resData.errors = ['Username not found'];
+    resData.errors.username = 'Username not found'
     return new Response(JSON.stringify(resData))
   }
 
   // If the hashed password doesnt match db result, password is wrong
   if (!await Bun.password.verify(password, hashedPassword.password)) {
-    resData.errors = ['Password does not match']
+    resData.errors.password = 'Password is incorrect'
     return new Response(JSON.stringify(resData))
   }
   
   // If the function makes it to this point, the user has been successfully authenticated
   // Create a session record for this user, send back a cookie with a hash to validate users in the future
-  // resData.status = true;
   let token;
   let tokenExists = true;
   
