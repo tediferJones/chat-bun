@@ -13,17 +13,9 @@ import { BackendServers } from './types';
 //
 // TO-DO:
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
-//    - Add salt to password verification for user auth
-//      - Passwords are not automatically salted, so this will have to be added manually
 //    - Do we want users to be able to pick a custom color for their name?
 //      - Would require re-working chatHistory container
 //      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
-//    - Go over all potential errors, make sure things are working or responding correctly
-//      - Make sure constraints in verifyInputs are reasonable (passwords should be at least 8 characters, etc...)
-//      - This would be a good time to add salt to passwords, we'll have to clear the DB anyways
-//      - [ DONE ] Create errors message for 'You are already connected to this server'
-//        - [ DONE ] Also setup form to clear new server input on submit
-//      - [ DONE ] Fix error messages for new connection expanding the userInfo container vertically
 //    - Figure out how to backup this database
 //      - Can we use max's NAS as a backup location?
 //      - This doesn't matter too much for this project but it may matter more on other projects
@@ -31,15 +23,34 @@ import { BackendServers } from './types';
 //      - [ DONE ] Add some kind of backup/default monospace font
 //    - DELETE ALL console.log() STATEMENTS
 //    - Clean up this file (server.tsx)
-//    - Consider cleaning up or re-oganizing NewConnections component
-//    - Add type='password' to login/signup forms, 
-//        - also add another input to signup page to make sure passwords match
 //    - Change all .then() calls to async functions with await
-//    - Delete testToken var from /api/signup, or use it as salt for password hashing
 //    - Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
 //        - [ DONE ] add viewErrors
 //        - see login/signup component for examples
-//    - Make sure login and signup pages have matching styles (i.e. they should look almost identical)
+//    - We should probably try to use typescript magic imports, 
+//      - see the comment above rootPath var in this file for more details
+//    - Try to get rid of toggle state var again
+//    - Use NewInput component for message input, and maybe add a special filter messages containing only white space
+//    - Do we want NewInput to have an optional required attr?
+//      - This will use the built in validators
+//      - But maybe this should be decided in /modules/inputValidators, that's where all the other validation logic is
+//    - [ DONE ] Make sure login and signup pages have matching styles (i.e. they should look almost identical)
+//    - [ DONE ] See if we can add a useHTMLValidators attribute to NewInput so that we can toggle using built-in validators or not
+//      - [ DONE ] But what would happen it tries to add the constraint 'match' to an HTML element?
+//      - [ DONE ] Solution: its off by default, dont use it on attributes thats cant use it
+//    - [ DONE ] Add salt to password verification for user auth
+//      - [ DONE ] Passwords are not automatically salted, so this will have to be added manually
+//    - [ DONE ] Go over all potential errors, make sure things are working or responding correctly
+//      - [ DONE ] Make sure constraints in verifyInputs are reasonable (passwords should be at least 8 characters, etc...)
+//      - [ DONE ] This would be a good time to add salt to passwords, we'll have to clear the DB anyways
+//      - [ DONE ] Create errors message for 'You are already connected to this server'
+//        - [ DONE ] Also setup form to clear new server input on submit
+//      - [ DONE ] Fix error messages for new connection expanding the userInfo container vertically
+//    - [ DONE ] Consider cleaning up or re-oganizing NewConnections component
+//    - [ DONE ] Add type='password' to login/signup forms, 
+//        -  [ DONE ] also add another input to signup page to make sure passwords match
+//    - [ DONE ] Delete testToken var from /api/signup, or use it as salt for password hashing
+//    - [ DONE ] Modify NewInput component as described in the comments of that file
 //    - [ DONE ] Merge verifyInputs and inputConstraints modules, they are very co-dependant
 //    - [ DONE ] Add more types to types file
 //      - [ DONE ] GET RID OF ALL 'ANY' TYPES IN THIS PROJECT

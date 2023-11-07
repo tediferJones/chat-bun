@@ -18,16 +18,15 @@ export default function UserInfo() {
   }, [refreshToggle])
 
   return (
-    <div className='flex flex-wrap'>
+    <>
       {status === null ? <h1>Loading...</h1> :
         status === false ? <a href='/login'>Login</a> :
-          <div className='flex'>
-            <h1 className='m-auto px-4'>{username}</h1>
-            <button className='px-4 bg-blue-700' onClick={() => {
+          <div className='flex gap-4 justify-between w-full sm:w-min'>
+            <h1 className='text-center my-auto w-1/3 sm:w-min'>{username}</h1>
+            <button className='px-4 p-1 bg-blue-700 w-1/3 sm:w-min' onClick={() => {
               fetch('/api/logout')
                 .then((res: Response) => res.json())
                 .then((data: ResBody) => {
-                  // if (!data.errors.length) {
                   if (!Object.keys(data.errors).length) {
                     window.location.href = '/login'
                   }
@@ -36,6 +35,6 @@ export default function UserInfo() {
             }}>Logout</button>
           </div>
       }
-    </div>
+    </>
   )
 }

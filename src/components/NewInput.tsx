@@ -1,32 +1,37 @@
 // import { inputConstraints } from "../modules/inputValidation"
 
+import { inputConstraints } from "../modules/inputValidation";
+
 export default function NewInput({
   inputName,
+  type,
   className,
   inputClassName,
+  labelClassName,
+  useHTMLValidators,
 }: {
   inputName: string,
+  type: 'number' | 'text' | 'password',
   className?: string,
   inputClassName?: string,
+  labelClassName?: string,
+  useHTMLValidators?: true,
 }) {
-  // console.log(inputConstraints[inputName])
-  // THIS SHOULD PROBABLY BE CONVERTED TO A DIV CONTAINING A LABEL AND INPUT, this makes styling easier and more controllable
-  return <label className={className} htmlFor={inputName}>
-    {inputName[0].toUpperCase() + inputName.slice(1) + ':'}
+  const builtInValidators = useHTMLValidators ? inputConstraints[inputName] : {}
+  return <div className={className}>
+    <label className={labelClassName} htmlFor={inputName}>
+      {inputName[0].toUpperCase() + inputName.replace(/([A-Z])/g, ' $1').slice(1) + ':'}
+    </label>
     <input id={inputName} 
       className={inputClassName}
       name={inputName} 
-      type='text' 
+      type={type} 
       onInput={(e) => {
         e.currentTarget.setCustomValidity('')
       }}
-      required 
+      required
+      // required={true} 
+      {...builtInValidators}
     />
-      {/*
-      {...inputConstraints[inputName]}
-      onInvalid={(e) => {
-        console.log('FAILED VALIDATION')
-      }}
-      */}
-  </label>
+  </div>
 }

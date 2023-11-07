@@ -28,12 +28,15 @@ export async function POST(req: Request) {
 
   // WHY IS THIS HERE, DELETE IT
   // Or use it to generate salt for password hash
-  const testToken = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64')
-  console.log(testToken)
-  db.query('INSERT INTO users (username, password) VALUES ($username, $password)')
+  const salt = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64')
+  // console.log('THIS IS THE SALT')
+  // console.log(salt)
+  // db.query('INSERT INTO users (username, password) VALUES ($username, $password)')
+  db.query('INSERT INTO users (username, password, salt) VALUES ($username, $password, $salt)')
     .run({
       $username: username,
-      $password: await Bun.password.hash(password),
+      $password: await Bun.password.hash(password + salt),
+      $salt: salt,
     })
 
   return new Response(JSON.stringify(resData))

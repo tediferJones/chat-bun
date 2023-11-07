@@ -1,7 +1,8 @@
-export const inputConstraints: { [key: string]: { minLength: number, maxLength: number } } = {
-  username: { minLength: 4, maxLength: 32 },
-  password: { minLength: 4, maxLength: 32 },
+export const inputConstraints: { [key: string]: { minLength?: number, maxLength?: number, match?: string } } = {
+  username: { minLength: 8, maxLength: 32 },
+  password: { minLength: 8, maxLength: 32 },
   servername: { minLength: 4, maxLength: 32 },
+  confirm: { match: 'password' },
 }
 
 export function verifyInputs(inputs: { [key: string]: string }): { isValid: boolean, errors: { [key: string]: string } } {
@@ -19,11 +20,15 @@ export function verifyInputs(inputs: { [key: string]: string }): { isValid: bool
       verify: (value: string, constraint: number) => value.length <= constraint,
       error: (constraint: number) => `Must be at most ${constraint} characters`,
     },
+    match: {
+      verify: (value: string, constraint: string) => value === inputs[constraint],
+      error: (constraint: string) => `Doesn't match ${constraint}`,
+    },
   }
 
   // inputs contains all things that need validated
   Object.keys(inputs).forEach((input: string) => {
-    const constraints: { [key: string]: number }  = inputConstraints[input];
+    const constraints: { [key: string]: number | string }  = inputConstraints[input];
     const value: string = inputs[input];
     Object.keys(constraints).forEach((constraint: string) => {
       if (!verifyFunctions[constraint].verify(value, constraints[constraint])) {

@@ -13,8 +13,10 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify(resData))
   }
 
-  const hashedPassword = db.query<{ password: string }, { $username: string }>(
-    'SELECT password FROM users WHERE username = $username'
+  // const hashedPassword = db.query<{ password: string }, { $username: string }>(
+  //   'SELECT password FROM users WHERE username = $username'
+  const hashedPassword = db.query<{ password: string, salt: string }, { $username: string }>(
+    'SELECT password,salt FROM users WHERE username = $username'
   ).get({ $username: username })
 
   // If db result contains no password, the username does not exist
@@ -24,7 +26,7 @@ export async function POST(req: Request) {
   }
 
   // If the hashed password doesnt match db result, password is wrong
-  if (!await Bun.password.verify(password, hashedPassword.password)) {
+  if (!await Bun.password.verify(password + hashedPassword.salt, hashedPassword.password)) {
     resData.errors.password = 'Password is incorrect'
     return new Response(JSON.stringify(resData))
   }

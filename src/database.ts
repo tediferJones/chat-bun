@@ -4,7 +4,8 @@ const db = new Database('database.sqlite', { create: true })
 
 db.query(`CREATE TABLE IF NOT EXISTS users (
   username TEXT UNIQUE,
-  password TEXT
+  password TEXT,
+  salt TEXT
 )`).run()
 
 db.query(`CREATE TABLE IF NOT EXISTS sessions (

@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react'
-import { Servers } from '../types'
+import UserInfo from './UserInfo';
 import NewConnection from './NewConnection';
-import ChatHistory from './ChatHistory';
 import ManageConnections from './ManageConnections';
+import ChatHistory from './ChatHistory';
+import { Servers } from '../types'
 
 export default function ChatWindow() {
   const [servers, setServers] = useState<Servers>({})
@@ -15,13 +16,16 @@ export default function ChatWindow() {
 
   return (
     <div className='w-screen h-screen flex flex-col'>
-      <NewConnection 
-        servers={servers}
-        setServers={setServers}
-        setCurrentServer={setCurrentServer}
-        setToggle={setToggle}
-        chatRef={chatRef}
-      />
+      <div className='p-4 flex justify-between gap-4 flex-col-reverse sm:flex-row'>
+        <NewConnection 
+          servers={servers}
+          setServers={setServers}
+          setCurrentServer={setCurrentServer}
+          setToggle={setToggle}
+          chatRef={chatRef}
+        />
+        <UserInfo />
+      </div>
       <ManageConnections
         servers={servers}
         currentServer={currentServer}

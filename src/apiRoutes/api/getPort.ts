@@ -34,7 +34,7 @@ export async function POST(req: Request, servers: BackendServers) {
   while (activePorts.includes(resData.port)) resData.port++
 
   if (resData.port > 65535) {
-    resData.errors.port = 'No ports available, try again later';
+    resData.errors.servername = 'No ports available, try again later';
     return new Response(JSON.stringify(resData));
   }
 

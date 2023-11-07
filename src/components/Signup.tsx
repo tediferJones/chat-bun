@@ -9,7 +9,7 @@ export default function Signup() {
   return (
     <div className='p-8 bg-gray-800 rounded-3xl'>
       <h1>Create new account</h1>
-      <form className='' onSubmit={async(e) => {
+      <form onSubmit={async(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const inputs = getFormInputs(form);
@@ -34,8 +34,9 @@ export default function Signup() {
 
         window.location.href = '/login';
       }}>
-        <NewInput inputName='username' className='mt-4 flex flex-wrap justify-evenly' />
-        <NewInput inputName='password' className='mt-4 flex flex-wrap justify-evenly' />
+        <NewInput inputName='username' className='mt-4 flex flex-wrap justify-between' type='text' />
+        <NewInput inputName='password' className='mt-4 flex flex-wrap justify-between' type='password' />
+        <NewInput inputName='confirm' className='mt-4 flex flex-wrap justify-between' type='password' />
         <button className='mt-4 p-2 w-full bg-blue-700'>Sign-Up</button>
       </form>
       <div className='mt-4 text-center'>Already have an account? <a className='underline' href='/login'>Log in here</a></div>
