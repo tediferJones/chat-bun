@@ -1,15 +1,15 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { ResBody } from '../types';
+import { ResBody } from 'types';
 
 export default function ProtectPage({ children }: { children: ReactNode }) {
-  const [isVerified, setIsVerified] = useState(false)
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
-    fetch('/api/verify')
-      .then((res: Response) => res.json())
-      .then((data: ResBody) => {
-        data.username ? setIsVerified(true) : window.location.href = '/login'
-      });
+    (async() => {
+      const res: Response = await fetch('/api/verify');
+      const data: ResBody = await res.json();
+      data.username ? setIsVerified(true) : window.location.href = '/login';
+    })();
   }, [])
 
   return (

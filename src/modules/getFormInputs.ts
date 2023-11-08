@@ -1,4 +1,4 @@
-import { FormInputs } from "../types";
+import { FormInputs } from 'types';
 
 export default function getFormData(formElement: HTMLFormElement): FormInputs {
   const formData = new FormData(formElement)

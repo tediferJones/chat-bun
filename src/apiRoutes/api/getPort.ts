@@ -1,5 +1,5 @@
-import verifyUser from '../../modules/verifyUser'
-import { BackendServers, ResBody } from '../../types';
+import verifyUser from 'modules/verifyUser'
+import { BackendServers, ResBody } from 'types';
 
 export async function POST(req: Request, servers: BackendServers) {
   const { servername } = await req.json();

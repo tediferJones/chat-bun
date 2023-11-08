@@ -1,8 +1,8 @@
 import { RefObject } from 'react';
-import NewInput from './NewInput';
-import { verifyInputs, viewErrors } from '../modules/inputValidation';
-import getFormInputs from '../modules/getFormInputs';
-import { ResBody, ServerObj, Servers } from '../types';
+import NewInput from 'components/NewInput';
+import { verifyInputs, viewErrors } from 'modules/inputValidation';
+import getFormInputs from 'modules/getFormInputs';
+import { ResBody, ServerObj, Servers } from 'types';
 
 export default function NewConnection({ 
   servers, 

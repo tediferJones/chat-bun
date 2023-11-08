@@ -1,6 +1,6 @@
-import db from '../database';
-import getCookies from './getCookies';
-import { UserAuth } from '../types';
+import getCookies from 'modules/getCookies';
+import db from 'database';
+import { UserAuth } from 'types';
 
 export default function verifyUser(req: Request): UserAuth {
   const result: UserAuth = {

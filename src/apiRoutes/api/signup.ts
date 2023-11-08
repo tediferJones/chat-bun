@@ -1,6 +1,6 @@
-import db from '../../database';
-import { verifyInputs } from '../../modules/inputValidation';
-import { ResBody } from '../../types';
+import { verifyInputs } from 'modules/inputValidation';
+import db from 'database';
+import { ResBody } from 'types';
 
 export async function POST(req: Request) {
   const { username, password } = await req.json();

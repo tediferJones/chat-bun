@@ -1,6 +1,6 @@
-import { Servers } from '../types'
 import { RefObject, useRef } from 'react';
-import getFormInputs from '../modules/getFormInputs';
+import getFormInputs from 'modules/getFormInputs';
+import { Servers } from 'types'
 
 export default function ChatHistory({ 
   servers,

@@ -1,6 +1,6 @@
-import db from '../../database';
-import getCookies from '../../modules/getCookies';
-import { ResBody } from '../../types';
+import getCookies from 'modules/getCookies';
+import db from 'database';
+import { ResBody } from 'types';
 
 export function GET(req: Request) {
   const { sessionToken } = getCookies(req);

@@ -1,4 +1,4 @@
-import { Servers } from '../types'
+import { Servers } from 'types'
 
 export default function ManageConnections({
   servers,

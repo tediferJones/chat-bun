@@ -1,5 +1,5 @@
-import verifyUser from "../../modules/verifyUser"
-import { ResBody } from "../../types";
+import verifyUser from 'modules/verifyUser';
+import { ResBody } from 'types';
 
 export function GET(req: Request) {
   const { status, username } = verifyUser(req);

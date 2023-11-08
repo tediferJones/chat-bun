@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
-import UserInfo from './UserInfo';
-import NewConnection from './NewConnection';
-import ManageConnections from './ManageConnections';
-import ChatHistory from './ChatHistory';
-import { Servers } from '../types'
+import UserInfo from 'components/UserInfo';
+import NewConnection from 'components/NewConnection';
+import ManageConnections from 'components/ManageConnections';
+import ChatHistory from 'components/ChatHistory';
+import { Servers } from 'types';
 
 export default function ChatWindow() {
   const [servers, setServers] = useState<Servers>({})

@@ -1,7 +1,18 @@
 import { renderToReadableStream } from 'react-dom/server';
-import db from './database';
-// import { Server, ServerWebSocket } from 'bun';
-import { BackendServers } from './types';
+import db from 'database';
+import { BackendServers } from 'types';
+
+// This is the error we keep randomly getting, fix it
+// 86 | function cmdRun(cmd: string, currentDir?: string) {
+// 87 |   Bun.spawnSync(cmd.split(' '), { cwd: currentDir})
+// 88 | }
+// 89 | 
+// 90 | function newRouter(path: string) {
+// 91 |   return new Bun.FileSystemRouter({
+//              ^
+// error: Unable to find directory: /home/ted/TOP-stuff/personal-projects/chat-bun/build/pages
+//       at newRouter (/home/ted/TOP-stuff/personal-projects/chat-bun/src/server.tsx:91:9)
+//       at /home/ted/TOP-stuff/personal-projects/chat-bun/src/server.tsx:122:20
 
 // Notes on layers folder:
 // How do we make sure the api will only take requests from logged in users
@@ -23,17 +34,21 @@ import { BackendServers } from './types';
 //      - [ DONE ] Add some kind of backup/default monospace font
 //    - DELETE ALL console.log() STATEMENTS
 //    - Clean up this file (server.tsx)
-//    - Change all .then() calls to async functions with await
+//    - [ DONE ] Change all .then() calls to async functions with await
 //    - Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
 //        - [ DONE ] add viewErrors
 //        - see login/signup component for examples
-//    - We should probably try to use typescript magic imports, 
-//      - see the comment above rootPath var in this file for more details
+//    - [ DONE ] We should probably try to use typescript magic imports, 
+//      - [ DONE ] see the comment above rootPath var in this file for more details
+//      - But can we use this instead of the rootPath var?
+//      - Probably not, because it seems to only work for imports
+//      - Otherwise a 'file path' is essentially just a string, its hard for a compiler/lsp to determine if it is a file path or not
 //    - Try to get rid of toggle state var again
 //    - Use NewInput component for message input, and maybe add a special filter messages containing only white space
-//    - Do we want NewInput to have an optional required attr?
-//      - This will use the built in validators
-//      - But maybe this should be decided in /modules/inputValidators, that's where all the other validation logic is
+//    - Merge page sized components into pages, every page is just a single component anyways
+//    - [ DONE ] Do we want NewInput to have an optional required attr?
+//      - [ DONE ] This will use the built in validators
+//      - [ DONE ] But maybe this should be decided in /modules/inputValidators, that's where all the other validation logic is
 //    - [ DONE ] Make sure login and signup pages have matching styles (i.e. they should look almost identical)
 //    - [ DONE ] See if we can add a useHTMLValidators attribute to NewInput so that we can toggle using built-in validators or not
 //      - [ DONE ] But what would happen it tries to add the constraint 'match' to an HTML element?

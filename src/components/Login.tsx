@@ -1,9 +1,9 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
-import NewInput from './NewInput';
-import getFormInputs from '../modules/getFormInputs';
-import { verifyInputs, viewErrors } from '../modules/inputValidation';
-import { ResBody } from '../types';
+import NewInput from 'components/NewInput';
+import getFormInputs from 'modules/getFormInputs';
+import { verifyInputs, viewErrors } from 'modules/inputValidation';
+import { ResBody } from 'types';
 
 export default function Login() {
   return (

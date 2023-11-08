@@ -1,6 +1,4 @@
-// import { inputConstraints } from "../modules/inputValidation"
-
-import { inputConstraints } from "../modules/inputValidation";
+import { inputConstraints } from 'modules/inputValidation';
 
 export default function NewInput({
   inputName,
@@ -29,8 +27,6 @@ export default function NewInput({
       onInput={(e) => {
         e.currentTarget.setCustomValidity('')
       }}
-      required
-      // required={true} 
       {...builtInValidators}
     />
   </div>
