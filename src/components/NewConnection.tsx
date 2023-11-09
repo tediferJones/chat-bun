@@ -3,6 +3,7 @@ import NewInput from 'components/NewInput';
 import { verifyInputs, viewErrors } from 'modules/inputValidation';
 import getFormInputs from 'modules/getFormInputs';
 import { ResBody, ServerObj, Servers } from 'types';
+import easyFetch from 'modules/easyFetch';
 
 export default function NewConnection({ 
   servers, 
@@ -36,13 +37,7 @@ export default function NewConnection({
       }
 
       // Fetch port from server
-      const res = await fetch('/api/getPort', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ servername }),
-      });
+      const res: Response = await easyFetch('/api/getPort', 'POST', { servername }, true)
       const { errors, port }: ResBody = await res.json();
 
       // If no errors in response, setup new websocket

@@ -39,6 +39,7 @@ export default function ChatHistory({
         }}
       >
         <textarea className='flex-1 p-2 px-4 resize-none break-words rounded-l-3xl rounded-r-none innerScrollbar'
+          id='message'
           name='message'
           rows={2}
           placeholder='Press Ctrl + Enter to send'
@@ -47,7 +48,8 @@ export default function ChatHistory({
             if (e.key === 'Enter' && e.ctrlKey) {
               formRef.current?.submitBtn.click();
             }
-          }}/>
+          }}
+        />
         <button className='bg-blue-700 p-2 px-4 rounded-r-3xl rounded-l-none'
           name='submitBtn'
           type='submit'

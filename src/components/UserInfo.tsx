@@ -1,3 +1,4 @@
+import easyFetch from 'modules/easyFetch';
 import { useEffect, useState } from 'react';
 import { ResBody } from 'types';
 
@@ -8,8 +9,7 @@ export default function UserInfo() {
 
   useEffect(() => {
     (async() => {
-      const res = await fetch('/api/verify');
-      const data: ResBody = await res.json();
+      const data: ResBody = await easyFetch('/api/verify', 'GET');
 
       if (data.username) {
         setStatus(true);
@@ -27,7 +27,7 @@ export default function UserInfo() {
           <div className='flex gap-4 justify-between w-full sm:w-min'>
             <h1 className='text-center my-auto w-1/3 sm:w-min'>{username}</h1>
             <button className='px-4 p-1 bg-blue-700 w-1/3 sm:w-min' onClick={async() => {
-              await fetch('/api/logout');
+              await easyFetch('/api/logout', 'GET', {}, true)
               window.location.href = '/login';
               setRefreshToggle(!refreshToggle)
             }}>Logout</button>

@@ -1,3 +1,4 @@
+import easyFetch from 'modules/easyFetch';
 import { ReactNode, useEffect, useState } from 'react';
 import { ResBody } from 'types';
 
@@ -6,11 +7,10 @@ export default function ProtectPage({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     (async() => {
-      const res: Response = await fetch('/api/verify');
-      const data: ResBody = await res.json();
+      const data: ResBody = await easyFetch('/api/verify', 'GET');
       data.username ? setIsVerified(true) : window.location.href = '/login';
     })();
-  }, [])
+  }, []);
 
   return (
     <div>

@@ -34,18 +34,19 @@ import { BackendServers } from 'types';
 //      - [ DONE ] Add some kind of backup/default monospace font
 //    - DELETE ALL console.log() STATEMENTS
 //    - Clean up this file (server.tsx)
+//    - Try to get rid of toggle state var again
 //    - [ DONE ] Change all .then() calls to async functions with await
-//    - Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
+//    - [ DONE ] Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
 //        - [ DONE ] add viewErrors
-//        - see login/signup component for examples
+//        - [ DONE ] see login/signup component for examples
 //    - [ DONE ] We should probably try to use typescript magic imports, 
 //      - [ DONE ] see the comment above rootPath var in this file for more details
-//      - But can we use this instead of the rootPath var?
-//      - Probably not, because it seems to only work for imports
-//      - Otherwise a 'file path' is essentially just a string, its hard for a compiler/lsp to determine if it is a file path or not
-//    - Try to get rid of toggle state var again
-//    - Use NewInput component for message input, and maybe add a special filter messages containing only white space
-//    - Merge page sized components into pages, every page is just a single component anyways
+//      - [ DONE ] But can we use this instead of the rootPath var?
+//      - [ DONE ] Probably not, because it seems to only work for imports
+//      - [ DONE ] Otherwise a 'file path' is essentially just a string, its hard for a compiler/lsp to determine if it is a file path or not
+//    - [ DONE ] Use NewInput component for message input, and maybe add a special filter messages containing only white space
+//      - [ DONE ] Why tho? It will greatly complicate the NewInput component and adds nothing to what the textarea neads (it has no custom error messages)
+//    - [ DONE ] Merge page sized components into pages, every page is just a single component anyways
 //    - [ DONE ] Do we want NewInput to have an optional required attr?
 //      - [ DONE ] This will use the built in validators
 //      - [ DONE ] But maybe this should be decided in /modules/inputValidators, that's where all the other validation logic is

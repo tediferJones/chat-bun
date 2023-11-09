@@ -2,6 +2,7 @@
 /// <reference lib="dom.iterable" />
 import NewInput from 'components/NewInput';
 import getFormInputs from 'modules/getFormInputs';
+import easyFetch from 'modules/easyFetch'
 import { verifyInputs, viewErrors } from 'modules/inputValidation';
 import { ResBody } from 'types';
 
@@ -19,15 +20,7 @@ export default function Signup() {
           return viewErrors(form, validity.errors)
         }
 
-        const res = await fetch('/api/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(inputs),
-        });
-
-        const data: ResBody = await res.json();
+        const data: ResBody = await easyFetch('/api/signup', 'POST', inputs)
         if (Object.keys(data.errors).length) {
           return viewErrors(form, data.errors)
         }
