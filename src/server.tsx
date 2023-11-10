@@ -27,6 +27,12 @@ import { BackendServers } from 'types';
 //    - Do we want users to be able to pick a custom color for their name?
 //      - Would require re-working chatHistory container
 //      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
+//      - We have the color picker, next steps:
+//        - create /api/updateColor route
+//        - add default color of white (#FFFFFF) when user initially signs up
+//        - Add some function to updateColor route so changes will be reflected for the next message
+//      - Write input validation for hexCodes
+//      - Edit /api/setColor, update all servers with new color when color gets updated
 //    - Figure out how to backup this database
 //      - Can we use max's NAS as a backup location?
 //      - This doesn't matter too much for this project but it may matter more on other projects
@@ -35,6 +41,12 @@ import { BackendServers } from 'types';
 //    - DELETE ALL console.log() STATEMENTS
 //    - Clean up this file (server.tsx)
 //    - Try to get rid of toggle state var again
+//    - Do a search over all comments in every file
+//    - Review /api/setColor
+//    - fix Settings component
+//    - Make the field username optional on UserAuth type
+//      - Adjust verifyUser's initial resData var accordingly
+//    - Clean up UserInfo component state vars
 //    - [ DONE ] Change all .then() calls to async functions with await
 //    - [ DONE ] Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
 //        - [ DONE ] add viewErrors

@@ -21,7 +21,11 @@ export default function ChatHistory({
       >
         {!Object.keys(servers).includes(currentServer) ? <div className='w-full h-full flex justify-center items-center text-xl'>Please connect to a chat room</div>:
           servers[currentServer].chatHistory.map((msg: string, i: number) => {
-            return <div className='break-words' key={i}>{msg}</div>
+            const data = JSON.parse(msg);
+            return <div className='break-words' key={i}>
+              <span style={{ color: data.color }}>{data.username}</span>
+              <span>{data.message}</span>
+            </div>
           })
         }
       </div>

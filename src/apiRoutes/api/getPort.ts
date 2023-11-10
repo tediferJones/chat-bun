@@ -40,36 +40,51 @@ export async function POST(req: Request, servers: BackendServers) {
 
   servers[servername] = {
     clients: [],
-    server: Bun.serve<{ username: string }>({
+    server: Bun.serve<{ username: string, color: string }>({
       port: resData.port,
       fetch: (req, server) => {
         // Validate the user on req, return "not logged in error" if they are not authorized
         console.log('NEW WEBSOCKET REQUEST RECIEVED')
-        const { status, username } = verifyUser(req)
+        const { status, username, color } = verifyUser(req)
         if (!status) return new Response(JSON.stringify('YOU ARE NOT LOGGED IN'))
-        if (server.upgrade(req, { data: { username } })) return
+        if (server.upgrade(req, { data: { username, color } })) return
         return new Response("Upgrade failed :|", { status: 500 });
       },
       websocket: {
         message(ws, message) {
           console.log('WEBSOCKET HAS RECIEVED A MESSAGE FROM ' + ws.data.username)
+          const newMessage = JSON.stringify({
+            username: ws.data.username,
+            color: ws.data.color,
+            message: ': ' + message,
+          });
           servers[servername].clients.forEach((client) => {
-            client.send(`${ws.data.username}: ${message}`)
+            client.send(newMessage)
           })
         },
         open(ws) {
           console.log('WEBSOCKET HAS BEEN OPENED FOR ' + ws.data.username)
+          const newMessage = JSON.stringify({
+            username: ws.data.username,
+            color: ws.data.color,
+            message: ' has connected',
+          });
           servers[servername].clients.push(ws)
           servers[servername].clients.forEach((client) => {
-            client.send(`${ws.data.username} has connected`)
+            client.send(newMessage)
           })
         },
         close(ws) {
           console.log('CLOSING WEBSOCKET FOR ' + ws.data.username)
           servers[servername].clients.splice(servers[servername].clients.indexOf(ws), 1)
           if (servers[servername].clients.length) {
+            const newMessage = JSON.stringify({
+              username: ws.data.username,
+              color: ws.data.color,
+              message: ' has disconnected',
+            });
             servers[servername].clients.forEach((client) => {
-              client.send(`${ws.data.username} has disconnected`)
+              client.send(newMessage)
             })
           } else {
             // If there are no clients, remove the server from servers obj

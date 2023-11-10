@@ -21,6 +21,7 @@ interface ResBody {
   errors: { [key: string]: string },
   username?: string,
   port?: number,
+  color?: string,
 }
 
 interface FormInputs {
@@ -30,6 +31,7 @@ interface FormInputs {
 interface UserAuth {
   status: boolean,
   username: string,
+  color?: string,
 }
 
 export type {
