@@ -31,14 +31,14 @@ export default function Settings({ color, setRefreshToggle }: { color: string, s
       <form className={`flex gap-4 absolute top-14 bg-gray-800 p-4 rounded-full${colorForm ? '' : ' hidden'}`}
         onSubmit={async (e) => {
           e.preventDefault();
-          console.log('SUBMITING NEW COLOR')
-          console.log(e)
+          // console.log('SUBMITING NEW COLOR')
+          // console.log(e)
           setRefreshToggle((oldToggle: boolean) => !oldToggle)
           // Should probably do some error handling or input validation here
           await easyFetch('/api/setColor', 'POST', { color: e.currentTarget.color.value })
         }}
       >
-        <input className='my-auto' name='color' type='color' onChange={(e) => console.log(e.currentTarget.value)} defaultValue={color}/>
+        <input className='my-auto' name='color' type='color' defaultValue={color}/>
         <button className='bg-blue-700 rounded-full p-1 px-4' type='submit'>Set Color</button>
       </form>
     </div>

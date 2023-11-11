@@ -24,15 +24,18 @@ import { BackendServers } from 'types';
 //
 // TO-DO:
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
-//    - Do we want users to be able to pick a custom color for their name?
-//      - Would require re-working chatHistory container
-//      - Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
-//      - We have the color picker, next steps:
-//        - create /api/updateColor route
-//        - add default color of white (#FFFFFF) when user initially signs up
+//    - [ DONE ] Do we want users to be able to pick a custom color for their name?
+//      - [ DONE ] Would require re-working chatHistory container
+//      - [ DONE ] Would also require a color wheel, or just a text box and leave it on the user to lookup a custom color
+//      - [ DONE ] We have the color picker, next steps:
+//        - [ DONE ] create /api/updateColor route
+//        - [ DONE ] add default color of white (#FFFFFF) when user initially signs up
 //        - Add some function to updateColor route so changes will be reflected for the next message
 //      - Write input validation for hexCodes
 //      - Edit /api/setColor, update all servers with new color when color gets updated
+//    - Is it worth it to re-organize backend servers?
+//      - If we use an object formatted like so: { username: ws }, we can do faster lookups
+//      - This will mainly speed up /api/setColor
 //    - Figure out how to backup this database
 //      - Can we use max's NAS as a backup location?
 //      - This doesn't matter too much for this project but it may matter more on other projects
@@ -46,7 +49,12 @@ import { BackendServers } from 'types';
 //    - fix Settings component
 //    - Make the field username optional on UserAuth type
 //      - Adjust verifyUser's initial resData var accordingly
+//      - OR make color not optional, verifyUser should always return both a username and a color, both are guaranteed to exist if user exists
+//      - BUT technically, verifyUser will return either { status: false } or { status: true, username, color }
+//        - So maybe color and username should both be optional attributes
 //    - Clean up UserInfo component state vars
+//    - verifyUser modules should probably return undefined
+//      - Or maybe thats a real bad idea, idk
 //    - [ DONE ] Change all .then() calls to async functions with await
 //    - [ DONE ] Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
 //        - [ DONE ] add viewErrors

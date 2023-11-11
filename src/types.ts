@@ -13,7 +13,7 @@ interface Servers {
 interface BackendServers {
   [key: string]: {
     server: Server,
-    clients: ServerWebSocket<{ username: string }>[],
+    clients: ServerWebSocket<{ username: string, color: string }>[],
   }
 }
 
@@ -30,7 +30,7 @@ interface FormInputs {
 
 interface UserAuth {
   status: boolean,
-  username: string,
+  username?: string,
   color?: string,
 }
 
