@@ -30,15 +30,17 @@ import { BackendServers } from 'types';
 //      - [ DONE ] We have the color picker, next steps:
 //        - [ DONE ] create /api/updateColor route
 //        - [ DONE ] add default color of white (#FFFFFF) when user initially signs up
-//        - Add some function to updateColor route so changes will be reflected for the next message
+//        - [ DONE ] Add some function to updateColor route so changes will be reflected for the next message
+//      - [ DONE ] Edit /api/setColor, update all servers with new color when color gets updated
 //      - Write input validation for hexCodes
-//      - Edit /api/setColor, update all servers with new color when color gets updated
 //    - Is it worth it to re-organize backend servers?
 //      - If we use an object formatted like so: { username: ws }, we can do faster lookups
 //      - This will mainly speed up /api/setColor
 //    - Figure out how to backup this database
 //      - Can we use max's NAS as a backup location?
 //      - This doesn't matter too much for this project but it may matter more on other projects
+//      - Cant we just create an api route that will return a serialized version of the database
+//        - This route will have to be well protected, like an admin only route
 //    - Make all dev assets local, i.e. download fonts and icons to the public folder
 //      - [ DONE ] Add some kind of backup/default monospace font
 //    - DELETE ALL console.log() STATEMENTS
@@ -46,15 +48,16 @@ import { BackendServers } from 'types';
 //    - Try to get rid of toggle state var again
 //    - Do a search over all comments in every file
 //    - Review /api/setColor
-//    - fix Settings component
-//    - Make the field username optional on UserAuth type
-//      - Adjust verifyUser's initial resData var accordingly
-//      - OR make color not optional, verifyUser should always return both a username and a color, both are guaranteed to exist if user exists
-//      - BUT technically, verifyUser will return either { status: false } or { status: true, username, color }
-//        - So maybe color and username should both be optional attributes
-//    - Clean up UserInfo component state vars
-//    - verifyUser modules should probably return undefined
-//      - Or maybe thats a real bad idea, idk
+//    - [ DONE ] fix Settings component
+//    - [ DONE ] Make the field username optional on UserAuth type
+//      - [ DONE ] Adjust verifyUser's initial resData var accordingly
+//      - [ DONE ] OR make color not optional, verifyUser should always return both a username and a color, both are guaranteed to exist if user exists
+//      - [ DONE ] BUT technically, verifyUser will return either { status: false } or { status: true, username, color }
+//        - [ DONE ] So maybe color and username should both be optional attributes
+//    - [ DONE ] Clean up UserInfo component state vars
+//    - [ DONE ] verifyUser modules should probably return undefined
+//      - [ DONE ] Or maybe thats a real bad idea, idk
+//      - [ DONE ] Nah if auth fails return { status: false } or { status: true, username, color }
 //    - [ DONE ] Change all .then() calls to async functions with await
 //    - [ DONE ] Consider adding more helper functions like easyFetch and viewErrors, to simplify repetative tasks 
 //        - [ DONE ] add viewErrors

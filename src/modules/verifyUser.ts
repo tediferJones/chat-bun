@@ -5,8 +5,6 @@ import { UserAuth } from 'types';
 export default function verifyUser(req: Request): UserAuth {
   const result: UserAuth = {
     status: false,
-    username: '',
-    color: '',
   }
 
   const { sessionToken } = getCookies(req)
