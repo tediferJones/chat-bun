@@ -18,7 +18,6 @@ export default function verifyUser(req: Request): UserAuth {
         $token: string, 
     }>('SELECT * FROM sessions WHERE token = $token').get({ $token: sessionToken })
 
-    console.log(dbResult)
     if (dbResult?.expiresAt && dbResult?.username && dbResult.expiresAt > Date.now()) {
       result.status = true
       result.username = dbResult.username

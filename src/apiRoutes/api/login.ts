@@ -13,8 +13,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify(resData))
   }
 
-  // const hashedPassword = db.query<{ password: string }, { $username: string }>(
-  //   'SELECT password FROM users WHERE username = $username'
+  ////: Change hashedPassword to dbResult, since it contains both the hashedPassword and the password salt
   const hashedPassword = db.query<{ password: string, salt: string }, { $username: string }>(
     'SELECT password,salt FROM users WHERE username = $username'
   ).get({ $username: username })

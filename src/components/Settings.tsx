@@ -1,5 +1,8 @@
-import easyFetch from "modules/easyFetch";
-import { useState } from "react";
+import easyFetch from 'modules/easyFetch';
+import { verifyInputs, viewErrors } from 'modules/inputValidation';
+import getFormInputs from 'modules/getFormInputs';
+import { useState } from 'react';
+import { ResBody } from 'types';
 
 export default function Settings({ color, setRefreshToggle }: { color: string, setRefreshToggle: Function }) {
   const [colorForm, setColorForm] = useState<boolean>(false);
@@ -10,7 +13,7 @@ export default function Settings({ color, setRefreshToggle }: { color: string, s
       onMouseLeave={() => setColorForm(false)}
     >
       <button className='fa-solid fa-gear bg-blue-700 p-2'
-        onClick={() => setColorForm(colorForm ? false : true)}
+        onClick={() => setColorForm(!colorForm)}
       ></button>
 
       <div className='absolute h-8 w-8 top-8'></div>
@@ -18,9 +21,18 @@ export default function Settings({ color, setRefreshToggle }: { color: string, s
       <form className={`flex gap-4 absolute top-14 bg-gray-800 p-4 rounded-full${colorForm ? '' : ' hidden'}`}
         onSubmit={async (e) => {
           e.preventDefault();
-          setRefreshToggle((oldToggle: boolean) => !oldToggle)
-          // Should probably do some error handling or input validation here
-          await easyFetch('/api/setColor', 'POST', { color: e.currentTarget.color.value })
+          const form = e.target as HTMLFormElement;
+          const inputs = getFormInputs(form);
+          const validation = verifyInputs(inputs);
+          if (!validation.isValid) {
+            return viewErrors(form, validation.errors);
+          }
+
+          const data: ResBody = await easyFetch('/api/setColor', 'POST', inputs);
+          if (Object.keys(data.errors).length) {
+            return viewErrors(form, data.errors);
+          }
+          setRefreshToggle((oldToggle: boolean) => !oldToggle);
         }}
       >
         <input className='my-auto' name='color' type='color' defaultValue={color}/>

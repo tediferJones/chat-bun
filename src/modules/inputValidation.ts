@@ -3,13 +3,15 @@ export const inputConstraints: {
     minLength?: number,
     maxLength?: number,
     match?: string,
-    required?: boolean
+    required?: boolean,
+    isHex?: boolean,
   }  
 } = {
     username: { minLength: 8, maxLength: 32, required: true },
     password: { minLength: 8, maxLength: 32, required: true },
     servername: { minLength: 4, maxLength: 32, required: true },
     confirm: { match: 'password', required: true },
+    color: { isHex: true, required: true },
   }
 
 export function verifyInputs(inputs: { [key: string]: string }): { isValid: boolean, errors: { [key: string]: string } } {
@@ -34,17 +36,20 @@ export function verifyInputs(inputs: { [key: string]: string }): { isValid: bool
     required: {
       verify: (value: string, constraint: boolean) => !!value === constraint,
       error: () => 'This field is required',
+    },
+    isHex: {
+      verify: (value: string, constraint: boolean) => !!value.match(/^#?([a-f0-9]{6}|[a-f0-9]{3})$/g) === constraint,
+      error: () => 'Not a valid hex code',
     }
   }
 
-  // inputs contains all things that need validated
   Object.keys(inputs).forEach((input: string) => {
     const constraints: { [key: string]: number | string | boolean }  = inputConstraints[input];
     const value: string = inputs[input];
     Object.keys(constraints).forEach((constraint: string) => {
       if (!verifyFunctions[constraint].verify(value, constraints[constraint])) {
         result.isValid = false;
-        result.errors[input] = verifyFunctions[constraint].error(constraints[constraint])
+        result.errors[input] = verifyFunctions[constraint].error(constraints[constraint]);
       }
     });
   });
@@ -55,7 +60,7 @@ export function verifyInputs(inputs: { [key: string]: string }): { isValid: bool
 export function viewErrors(form: HTMLFormElement, errors: { [key: string]: string }) {
   if (Object.keys(errors).length) {
     Object.keys(errors).forEach((input: string) => {
-      form[input].setCustomValidity(errors[input])
+      form[input].setCustomValidity(errors[input]);
     });
     form.reportValidity();
   }

@@ -6,7 +6,7 @@ export default function easyFetch(
 ): Promise<any> {
   method = method.toUpperCase();
 
-  const methodsV2: { methods: string[], fetch: Function }[] = [
+  const methods: { methods: string[], fetch: Function }[] = [
     {
       methods: ['GET', 'HEAD', 'DELETE'],
       fetch: (path: string, body: { [key: string]: string }) => {
@@ -27,15 +27,14 @@ export default function easyFetch(
   ]
 
   let result;
-  for (let handler of methodsV2) {
+  for (let handler of methods) {
     if (handler.methods.includes(method)) {
-      // result = await handler.fetch(path, body);
       result = handler.fetch(path, body);
       break;
     }
   }
 
-  if (!result) throw new Error(`Fetch method ${method} is not supported`)
+  if (!result) throw new Error(`Fetch method ${method} is not supported`);
   if (skipJSON) return result;
   return result.then((res: Response) => res.json());
 }

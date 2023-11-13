@@ -34,6 +34,8 @@ interface UserAuth {
   color?: string,
 }
 
+////: type UserAuth = { status: false } | { status: true, username: string, color: string }
+
 export type {
   ServerObj,
   Servers,

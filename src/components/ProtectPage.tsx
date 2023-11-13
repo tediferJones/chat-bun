@@ -7,8 +7,6 @@ export default function ProtectPage({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     (async() => {
-      // const data: ResBody = await easyFetch('/api/verify', 'GET');
-      // data.username ? setIsVerified(true) : window.location.href = '/login';
       (await easyFetch('/api/verify', 'GET') as UserAuth).status 
         ? setIsVerified(true)
         : window.location.href = '/login';

@@ -12,7 +12,6 @@ export function GET(req: Request) {
   if (sessionToken) {
     db.query('DELETE FROM sessions WHERE token = $token').run({ $token: sessionToken });
   } else {
-    // resData.errors.push('No session token found');
     resData.errors.token = 'Token not found'
   }
 

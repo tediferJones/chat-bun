@@ -10,11 +10,7 @@ export async function POST(req: Request) {
 
   const validation = verifyInputs({ username, password })
   if (!validation.isValid) {
-    // This is pretty sloppy, try to not make copies if possible
-    resData.errors = {
-      ...resData.errors,
-      ...validation.errors,
-    }
+    resData.errors = validation.errors;
     return new Response(JSON.stringify(resData))
   }
 
@@ -26,12 +22,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify(resData))
   }
 
-  // WHY IS THIS HERE, DELETE IT
-  // Or use it to generate salt for password hash
   const salt = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64')
-  // console.log('THIS IS THE SALT')
-  // console.log(salt)
-  // db.query('INSERT INTO users (username, password) VALUES ($username, $password)')
   db.query('INSERT INTO users (username, password, salt) VALUES ($username, $password, $salt)')
     .run({
       $username: username,

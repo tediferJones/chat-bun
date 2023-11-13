@@ -20,6 +20,15 @@ import { BackendServers } from 'types';
 // Still working, folder is ignored
 // We can now validate users in the api
 //
+// Can we get away with only using one 'router'?
+// Routes objects already mirror paths from each router
+// We just need an object like so
+// { urlPath: function }
+// IF urlPath starts with /api, return api response
+// Theoretically, we can just move the api folder into the pages folder
+// BUT, then we cant properly determine which files to build
+// Is it possible to at least merge apiRouter with apiRoutes?  so we only have one object
+//
 // Chat history problem is the result of a 'Stale Closure'
 //
 // TO-DO:
@@ -32,7 +41,7 @@ import { BackendServers } from 'types';
 //        - [ DONE ] add default color of white (#FFFFFF) when user initially signs up
 //        - [ DONE ] Add some function to updateColor route so changes will be reflected for the next message
 //      - [ DONE ] Edit /api/setColor, update all servers with new color when color gets updated
-//      - Write input validation for hexCodes
+//      - [ DONE ] Write input validation for hexCodes
 //    - Is it worth it to re-organize backend servers?
 //      - If we use an object formatted like so: { username: ws }, we can do faster lookups
 //      - This will mainly speed up /api/setColor
@@ -43,11 +52,16 @@ import { BackendServers } from 'types';
 //        - This route will have to be well protected, like an admin only route
 //    - Make all dev assets local, i.e. download fonts and icons to the public folder
 //      - [ DONE ] Add some kind of backup/default monospace font
-//    - DELETE ALL console.log() STATEMENTS
-//    - Clean up this file (server.tsx)
+//    - [ DONE ] DELETE ALL console.log() STATEMENTS
+//    - [ DONE ] Clean up this file (server.tsx)
 //    - Try to get rid of toggle state var again
-//    - Do a search over all comments in every file
-//    - Review /api/setColor
+//    - [ DONE ] Do a search over all comments in every file
+//    - Search for super comments, search for ////:
+//    - [ DONE ] Review /api/setColor
+//    - What do we do with the console.log at the bottom of this file? (server.tsx)
+//    - Move getInputs to inputValidition module?
+//      - Do we ever use this function in a way that doesn't involve other parts of inputValidation?
+//    - Can we get easyFetch and verifyUser to return proper types?
 //    - [ DONE ] fix Settings component
 //    - [ DONE ] Make the field username optional on UserAuth type
 //      - [ DONE ] Adjust verifyUser's initial resData var accordingly
@@ -158,33 +172,17 @@ await Bun.build({
 // Create final routers
 const buildRouter = newRouter('build/pages');
 const apiRouter = newRouter('src/apiRoutes');
-// console.log(apiRouter)
 
 // Import all needed routes when server starts, so we dont have dynamically reload each route
-// Should probably be pageRoutes instead of pages
-// const pages = importPaths(srcRouter.routes)
 const pageRoutes = importPaths(srcRouter.routes)
 const apiRoutes = importPaths(apiRouter.routes)
-
-// Can we get away with only using one 'router'?
-// Routes objects already mirror paths from each router
-// We just need an object like so
-// { urlPath: function }
-// IF urlPath starts with /api, return api response
-// Theoretically, we can just move the api folder into the pages folder
-// BUT, then we cant properly determine which files to build
-// Is it possible to at least merge apiRouter with apiRoutes?  so we only have one object
 
 // Clean-up expired cookies, should run once per day
 setInterval(() => {
   db.query('DELETE FROM sessions WHERE expiresAt < $expiresAt').run({ $expiresAt: Date.now() })
 }, 1000*60*60*24);
 
-// We should setup the websocket server somewhere around here
-// const servers: { [key: string]: {
-//   server: Server,
-//   clients: ServerWebSocket[],
-// }} = {};
+// Initialize empty obj to keep track of active servers
 const servers: BackendServers = {};
 
 // Run server to serve HTML to user
@@ -192,13 +190,11 @@ const server = Bun.serve({
   port: 3000,
   async fetch(req) {
     console.log(req.method + ', ' + new URL(req.url).pathname)
-    // console.log('Active Servers: ', servers)
     // RENAME THIS TO pageMatch
     const builtMatch = buildRouter.match(req)
     const apiMatch = apiRouter.match(req)
 
     if (builtMatch) {
-      console.log('RETURN PAGE')
       return new Response(await renderToReadableStream(
         pageRoutes[builtMatch.name].default({ params: builtMatch.params }), {
           bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
@@ -207,39 +203,21 @@ const server = Bun.serve({
       ));
     }
     if (apiMatch) {
-      console.log('RETURN API RESPONSE')
-      const apiFunc = apiRoutes[apiMatch.name][req.method]
+      const apiFunc = apiRoutes[apiMatch.name][req.method];
       return apiFunc ? apiFunc(req, servers) : 
-        new Response(`API Route ${apiMatch.name} does not have a ${req.method} method`)
+        new Response(`API Route ${apiMatch.name} does not have a ${req.method} method`);
     } 
-    console.log(`RETURN FILE`)
     const filePath = new URL(req.url).pathname;
-    const directoryOptions = ['build/pages', 'build', 'public']
-    // let foundFile = false;
-    // Maybe rename to 'res'
-    // let file;
+    const directoryOptions = ['build/pages', 'build', 'public'];
 
     for (let i = 0; i < directoryOptions.length; i++) {
       const file = Bun.file(rootPath + directoryOptions[i] + filePath)
       if (await file.exists()) {
-        // foundFile = true;
-        // break
         return new Response(file);
       }
     }
 
     return new Response(JSON.stringify(`Page ${filePath} not found`), { status: 404 });
-    // return foundFile ? new Response(file) :
-    //   new Response(JSON.stringify(`Page ${filePath} not found`), { status: 404 })
-
-    // console.log('resulting file:', !!file, file)
-    // // If we still dont have a file, return 404
-    // if (!await file?.exists()) {
-    //   return new Response(JSON.stringify(`Page ${filePath} not found`), { status: 404 })
-    // }
-
-    // // console.log(filePath)
-    // return new Response(file)
   }
 })
 
