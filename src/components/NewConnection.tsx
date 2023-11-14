@@ -1,7 +1,6 @@
 import { RefObject } from 'react';
 import NewInput from 'components/NewInput';
-import { verifyInputs, viewErrors } from 'modules/inputValidation';
-import getFormInputs from 'modules/getFormInputs';
+import { verifyInputs, viewErrors, getFormInputs } from 'modules/inputValidation';
 import { ResBody, ServerObj, Servers } from 'types';
 import easyFetch from 'modules/easyFetch';
 
@@ -23,6 +22,7 @@ export default function NewConnection({
       e.preventDefault();
       const form = e.target as HTMLFormElement;
       const { servername } = getFormInputs(form)
+      console.log(servername)
 
       // If user is already connected to this server, just switch chat view to that server
       if (Object.keys(servers).includes(servername)) {

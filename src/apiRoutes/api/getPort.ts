@@ -9,7 +9,8 @@ export async function POST(req: Request, servers: BackendServers) {
   }
 
   const userAuth = verifyUser(req);
-  if (!userAuth.status) {
+  // if (!userAuth.status) {
+  if (!userAuth) {
     resData.errors.auth = 'You must login to access this route';
     return new Response(JSON.stringify(resData));
   }
@@ -43,9 +44,13 @@ export async function POST(req: Request, servers: BackendServers) {
       port: resData.port,
       fetch: (req, server) => {
         // Validate the user on req, return "not logged in error" if they are not authorized
-        const { status, username, color } = verifyUser(req)
-        if (!status) return new Response(JSON.stringify('YOU ARE NOT LOGGED IN'))
-        if (server.upgrade(req, { data: { username, color } })) return
+        ////: const { status, username, color } = verifyUser(req)
+        const user = verifyUser(req);
+        if (!user) return new Response(JSON.stringify('YOU ARE NOT LOGGED IN'))
+        if (server.upgrade(req, { data: { 
+          username: user.username, 
+          color: user.color,
+        } })) return
         return new Response("Upgrade failed :|", { status: 500 });
       },
       websocket: {

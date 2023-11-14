@@ -28,13 +28,34 @@ interface FormInputs {
   [key: string]: string,
 }
 
-interface UserAuth {
-  status: boolean,
-  username?: string,
-  color?: string,
+type UserAuth = undefined | {
+  username: string,
+  color: string,
 }
 
+////: interface UserAuth {
+////:   status: boolean,
+////:   username?: string,
+////:   color?: string,
+////: }
+
 ////: type UserAuth = { status: false } | { status: true, username: string, color: string }
+////: type UserAuth = {
+////:   status: boolean,
+////:   username?: string,
+////:   color?: string
+////: } | {
+////:   status: true,
+////:   username: string,
+////:   color: string
+////: }
+
+////: interface UserAuth {
+////:   status: false | {
+////:     username: string,
+////:     color: string,
+////:   }
+////: }
 
 export type {
   ServerObj,

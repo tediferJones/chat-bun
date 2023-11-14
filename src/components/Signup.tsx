@@ -1,9 +1,8 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
 import NewInput from 'components/NewInput';
-import getFormInputs from 'modules/getFormInputs';
 import easyFetch from 'modules/easyFetch'
-import { verifyInputs, viewErrors } from 'modules/inputValidation';
+import { verifyInputs, viewErrors, getFormInputs } from 'modules/inputValidation';
 import { ResBody } from 'types';
 
 export default function Signup() {

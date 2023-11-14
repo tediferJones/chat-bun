@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import UserInfo from 'components/UserInfo';
 import NewConnection from 'components/NewConnection';
 import ManageConnections from 'components/ManageConnections';

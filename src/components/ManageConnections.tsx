@@ -12,13 +12,7 @@ export default function ManageConnections({
   return (
     <div className='flex flex-wrap mx-2'>
       {Object.keys(servers).map((servername: string, i: number) => {
-        let classes = 'flex-1 flex justify-between mx-2 mb-4 rounded-full'
-        if (currentServer === servername) {
-          classes += ' bg-blue-700'
-        } else {
-          classes += ' bg-gray-600'
-        }
-        return <div className={classes} key={`server${i}`}>
+        return <div className={`flex-1 flex justify-between mx-2 mb-4 rounded-full ${currentServer === servername ? 'bg-blue-700' : 'bg-gray-600'}`} key={`server${i}`}>
           <button className='p-2 px-4 flex-1 text-left rounded-r-none' onClick={() => {
             setCurrentServer(servername) 
           }}>{servername}</button>

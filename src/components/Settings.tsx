@@ -1,6 +1,5 @@
 import easyFetch from 'modules/easyFetch';
-import { verifyInputs, viewErrors } from 'modules/inputValidation';
-import getFormInputs from 'modules/getFormInputs';
+import { verifyInputs, viewErrors, getFormInputs } from 'modules/inputValidation';
 import { useState } from 'react';
 import { ResBody } from 'types';
 

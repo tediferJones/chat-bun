@@ -1,3 +1,5 @@
+import { FormInputs } from "types"
+
 export const inputConstraints: {
   [key: string]: { 
     minLength?: number,
@@ -60,8 +62,23 @@ export function verifyInputs(inputs: { [key: string]: string }): { isValid: bool
 export function viewErrors(form: HTMLFormElement, errors: { [key: string]: string }) {
   if (Object.keys(errors).length) {
     Object.keys(errors).forEach((input: string) => {
-      form[input].setCustomValidity(errors[input]);
+      ////:
+      if (form[input]) {
+        form[input].setCustomValidity(errors[input]);
+      }
+      // form[input].setCustomValidity(errors[input]);
     });
     form.reportValidity();
   }
+}
+
+export function getFormInputs(formElement: HTMLFormElement): FormInputs {
+  const formData = new FormData(formElement)
+  const result: FormInputs = {};
+  
+  for (let entry of formData.entries()) {
+    result[entry[0].toString()] = entry[1].toString();
+  }
+
+  return result;
 }

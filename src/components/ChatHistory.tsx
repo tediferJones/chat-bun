@@ -1,5 +1,5 @@
 import { RefObject, useRef } from 'react';
-import getFormInputs from 'modules/getFormInputs';
+import { getFormInputs } from 'modules/inputValidation';
 import { Servers } from 'types'
 
 export default function ChatHistory({ 

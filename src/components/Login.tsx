@@ -2,8 +2,7 @@
 /// <reference lib="dom.iterable" />
 import NewInput from 'components/NewInput';
 import easyFetch from 'modules/easyFetch';
-import getFormInputs from 'modules/getFormInputs';
-import { verifyInputs, viewErrors } from 'modules/inputValidation';
+import { verifyInputs, viewErrors, getFormInputs } from 'modules/inputValidation';
 import { ResBody } from 'types';
 
 export default function Login() {
