@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import Settings from 'components/Settings';
 import easyFetch from 'modules/easyFetch';
-import { UserAuth } from 'types';
+import { ResBody, UserAuth } from 'types';
 
 export default function UserInfo() {
   const [refreshToggle, setRefreshToggle] = useState<boolean>(false);
   const [auth, setAuth] = useState<null | UserAuth>(null);
 
   useEffect(() => {
-    (async() => setAuth(await easyFetch('/api/verify', 'GET')))();
+    // (async() => setAuth(await easyFetch('/api/verify', 'GET')))();
+    (async() => {
+      const resBody: ResBody = await easyFetch('/api/verify', 'GET')
+      setAuth(resBody.user)
+      // console.log(resBody)
+    })()
   }, [refreshToggle])
 
   return (

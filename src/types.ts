@@ -10,22 +10,17 @@ interface Servers {
   [key: string]: ServerObj,
 }
 
+interface BackendServerObj extends Server {
+  clients: { [key: string]: ServerWebSocket<{ username: string, color: string }> }
+}
+
 interface BackendServers {
-  [key: string]: {
-    server: Server,
-    clients: ServerWebSocket<{ username: string, color: string }>[],
-  }
-}
-
-interface ResBody {
-  errors: { [key: string]: string },
-  username?: string,
-  port?: number,
-  color?: string,
-}
-
-interface FormInputs {
-  [key: string]: string,
+  [key: string]: BackendServerObj
+  ////: 
+  // [key: string]: {
+  //   server: Server,
+  //   clients: ServerWebSocket<{ username: string, color: string }>[],
+  // }
 }
 
 type UserAuth = undefined | {
@@ -33,29 +28,15 @@ type UserAuth = undefined | {
   color: string,
 }
 
-////: interface UserAuth {
-////:   status: boolean,
-////:   username?: string,
-////:   color?: string,
-////: }
+interface ResBody {
+  errors: { [key: string]: string },
+  port?: number,
+  user?: UserAuth,
+}
 
-////: type UserAuth = { status: false } | { status: true, username: string, color: string }
-////: type UserAuth = {
-////:   status: boolean,
-////:   username?: string,
-////:   color?: string
-////: } | {
-////:   status: true,
-////:   username: string,
-////:   color: string
-////: }
-
-////: interface UserAuth {
-////:   status: false | {
-////:     username: string,
-////:     color: string,
-////:   }
-////: }
+interface FormInputs {
+  [key: string]: string,
+}
 
 export type {
   ServerObj,
@@ -64,4 +45,5 @@ export type {
   ResBody,
   FormInputs,
   UserAuth,
+  BackendServerObj
 }

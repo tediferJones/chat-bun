@@ -33,16 +33,17 @@ import { BackendServers } from 'types';
 //
 // TO-DO:
 //    - Consider moving style.css output from public to build, this way it gets completely reset everytime the server starts
-//    - Is it worth it to re-organize backend servers?
-//      - If we use an object formatted like so: { username: ws }, we can do faster lookups
-//      - This will mainly speed up /api/setColor
+//    - [ DONE ] Is it worth it to re-organize backend servers?
+//      - [ DONE ] If we use an object formatted like so: { username: ws }, we can do faster lookups
+//      - [ DONE ] This will mainly speed up /api/setColor
 //    - Make all dev assets local, i.e. download fonts and icons to the public folder
 //      - [ DONE ] Add some kind of backup/default monospace font
 //    - Search for super comments, search for ////:
 //    - What do we do with the console.log at the bottom of this file? (server.tsx)
 //    - Add better return type for easyFetch
-//    - Do we want to switch back to using resBody for every response?
-//      - Edit resBody, delete username & color, replace with user?: UserAuth
+//    - Change all occurrences of resData and data to resBody, that way it matches the typename
+//    - [ DONE ] Do we want to switch back to using resBody for every response?
+//      - [ DONE ] Edit resBody, delete username & color, replace with user?: UserAuth
 //    - Figure out how to backup this database
 //      - Can we use max's NAS as a backup location?
 //      - This doesn't matter too much for this project but it may matter more on other projects
@@ -132,6 +133,7 @@ const server = Bun.serve({
     const filePath = new URL(req.url).pathname;
     const directoryOptions = ['build/pages', 'build', 'public'];
 
+    // could just use a for of loop
     for (let i = 0; i < directoryOptions.length; i++) {
       const file = Bun.file(rootPath + directoryOptions[i] + filePath)
       if (await file.exists()) {

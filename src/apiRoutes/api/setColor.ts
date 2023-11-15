@@ -30,15 +30,23 @@ export async function POST(req: Request, servers: BackendServers) {
     .get({ $username: user.username, $color: color })
 
   // Iterate through all servers, where username matches, update color attr of ws.data
-  Object.keys(servers).forEach((servername: string) => {
-    for (let i = 0; i < servers[servername].clients.length; i++) {
-      // if (servers[servername].clients[i].data.username === username) {
-      if (servers[servername].clients[i].data.username === user.username) {
-        servers[servername].clients[i].data.color = color;
-        break;
-      }
+  for (const servername in servers) {
+    // const userSocket = servers[servername].clients[user.username];
+    // userSocket.data.color 
+    // servers[servername].clients[user.username].data.color = color
+    if (servers[servername].clients[user.username]) {
+      servers[servername].clients[user.username].data.color = color
     }
-  })
+  }
+  // Object.keys(servers).forEach((servername: string) => {
+  //   for (let i = 0; i < servers[servername].clients.length; i++) {
+  //     // if (servers[servername].clients[i].data.username === username) {
+  //     if (servers[servername].clients[i].data.username === user.username) {
+  //       servers[servername].clients[i].data.color = color;
+  //       break;
+  //     }
+  //   }
+  // })
 
   return new Response(JSON.stringify(resData));
 }
