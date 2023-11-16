@@ -22,7 +22,6 @@ export default function NewConnection({
       e.preventDefault();
       const form = e.target as HTMLFormElement;
       const { servername } = getFormInputs(form)
-      console.log(servername)
 
       // If user is already connected to this server, just switch chat view to that server
       if (Object.keys(servers).includes(servername)) {
@@ -47,7 +46,8 @@ export default function NewConnection({
       form.reset();
 
       // Set up new web socket connection
-      const ws = new WebSocket(`ws://${new URL(res.url).hostname}:${port}`) as ServerObj;
+      const url = new URL(res.url)
+      const ws = new WebSocket(`${url.protocol === 'http:' ? 'ws' : 'wss'}://${url.hostname}:${port}`) as ServerObj;
       ws.servername = servername;
       ws.chatHistory = [];
       ws.onclose = () => {
