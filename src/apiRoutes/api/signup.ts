@@ -4,22 +4,22 @@ import { ResBody } from 'types';
 
 export async function POST(req: Request) {
   const { username, password } = await req.json();
-  const resData: ResBody = {
+  const resBody: ResBody = {
     errors: {},
   }
 
   const validation = verifyInputs({ username, password })
   if (!validation.isValid) {
-    resData.errors = validation.errors;
-    return new Response(JSON.stringify(resData))
+    resBody.errors = validation.errors;
+    return new Response(JSON.stringify(resBody))
   }
 
 
   // Validate that username does not already exist
   const existingUsername = db.query('SELECT * FROM users WHERE username = $username').get({ $username: username })
   if (existingUsername) {
-    resData.errors.username = 'Username already exists'
-    return new Response(JSON.stringify(resData))
+    resBody.errors.username = 'Username already exists'
+    return new Response(JSON.stringify(resBody))
   }
 
   const salt = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64')
@@ -30,5 +30,5 @@ export async function POST(req: Request) {
       $salt: salt,
     })
 
-  return new Response(JSON.stringify(resData))
+  return new Response(JSON.stringify(resBody))
 }

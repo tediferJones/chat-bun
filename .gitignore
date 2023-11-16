@@ -1,7 +1,7 @@
 # Dev additions:
 build
-layers
 *.sqlite
+notesV2.txt
 
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 

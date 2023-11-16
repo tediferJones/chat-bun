@@ -19,9 +19,9 @@ export default function Login() {
           return viewErrors(form, validity.errors)
         }
 
-        const data: ResBody = await easyFetch('/api/login', 'POST', inputs)
-        if (Object.keys(data.errors).length) {
-          return viewErrors(form, data.errors)
+        const resBody: ResBody = await easyFetch('/api/login', 'POST', inputs)
+        if (Object.keys(resBody.errors).length) {
+          return viewErrors(form, resBody.errors)
         }
 
         window.location.href = '/'

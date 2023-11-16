@@ -4,7 +4,7 @@ import { ResBody } from 'types';
 
 export function GET(req: Request) {
   const { sessionToken } = getCookies(req);
-  const resData: ResBody = {
+  const resBody: ResBody = {
     errors: {},
   }
 
@@ -12,10 +12,10 @@ export function GET(req: Request) {
   if (sessionToken) {
     db.query('DELETE FROM sessions WHERE token = $token').run({ $token: sessionToken });
   } else {
-    resData.errors.token = 'Token not found'
+    resBody.errors.token = 'Token not found'
   }
 
-  return new Response(JSON.stringify(resData), {
+  return new Response(JSON.stringify(resBody), {
     headers: {
       'Set-Cookie': `sessionToken=''; Max-Age=0; Path=/;`,
     },

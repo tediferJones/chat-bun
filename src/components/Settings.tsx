@@ -27,9 +27,9 @@ export default function Settings({ color, setRefreshToggle }: { color: string, s
             return viewErrors(form, validation.errors);
           }
 
-          const data: ResBody = await easyFetch('/api/setColor', 'POST', inputs);
-          if (Object.keys(data.errors).length) {
-            return viewErrors(form, data.errors);
+          const resBody: ResBody = await easyFetch('/api/setColor', 'POST', inputs);
+          if (Object.keys(resBody.errors).length) {
+            return viewErrors(form, resBody.errors);
           }
           setRefreshToggle((oldToggle: boolean) => !oldToggle);
         }}

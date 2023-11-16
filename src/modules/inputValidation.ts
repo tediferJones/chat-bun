@@ -45,17 +45,6 @@ export function verifyInputs(inputs: { [key: string]: string }): { isValid: bool
     }
   }
 
-  ////:
-  // Object.keys(inputs).forEach((input: string) => {
-  //   const constraints: { [key: string]: number | string | boolean }  = inputConstraints[input];
-  //   const value: string = inputs[input];
-  //   Object.keys(constraints).forEach((constraint: string) => {
-  //     if (!verifyFunctions[constraint].verify(value, constraints[constraint])) {
-  //       result.isValid = false;
-  //       result.errors[input] = verifyFunctions[constraint].error(constraints[constraint]);
-  //     }
-  //   });
-  // });
   for (const input in inputs) {
     const constraints: { [key: string]: number | string | boolean }  = inputConstraints[input];
     const value: string = inputs[input];
@@ -71,17 +60,6 @@ export function verifyInputs(inputs: { [key: string]: string }): { isValid: bool
 }
 
 export function viewErrors(form: HTMLFormElement, errors: { [key: string]: string }) {
-  ////: 
-  // if (Object.keys(errors).length) {
-  //   Object.keys(errors).forEach((input: string) => {
-  //     ////:
-  //     if (form[input]) {
-  //       form[input].setCustomValidity(errors[input]);
-  //     }
-  //     // form[input].setCustomValidity(errors[input]);
-  //   });
-  //   form.reportValidity();
-  // }
   for (const input in errors) {
     if (form[input]) {
       form[input].setCustomValidity(errors[input]);

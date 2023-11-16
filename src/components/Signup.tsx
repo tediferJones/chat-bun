@@ -16,12 +16,12 @@ export default function Signup() {
 
         const validity = verifyInputs(inputs);
         if (!validity.isValid) {
-          return viewErrors(form, validity.errors)
+          return viewErrors(form, validity.errors);
         }
 
-        const data: ResBody = await easyFetch('/api/signup', 'POST', inputs)
-        if (Object.keys(data.errors).length) {
-          return viewErrors(form, data.errors)
+        const resBody: ResBody = await easyFetch('/api/signup', 'POST', inputs);
+        if (Object.keys(resBody.errors).length) {
+          return viewErrors(form, resBody.errors);
         }
 
         window.location.href = '/login';

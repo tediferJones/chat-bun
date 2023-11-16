@@ -4,30 +4,29 @@ import { ResBody } from 'types';
 
 export async function POST(req: Request) {
   const { username, password }: { username: string, password: string } = await req.json()
-  const resData: ResBody = {
+  const resBody: ResBody = {
     errors: {},
   }
   const validation = verifyInputs({ username, password })
   if (!validation.isValid) {
-    resData.errors = validation.errors
-    return new Response(JSON.stringify(resData))
+    resBody.errors = validation.errors
+    return new Response(JSON.stringify(resBody))
   }
 
-  ////: Change hashedPassword to dbResult, since it contains both the hashedPassword and the password salt
-  const hashedPassword = db.query<{ password: string, salt: string }, { $username: string }>(
+  const dbResult = db.query<{ password: string, salt: string }, { $username: string }>(
     'SELECT password,salt FROM users WHERE username = $username'
   ).get({ $username: username })
 
   // If db result contains no password, the username does not exist
-  if (!hashedPassword?.password) {
-    resData.errors.username = 'Username not found'
-    return new Response(JSON.stringify(resData))
+  if (!dbResult?.password) {
+    resBody.errors.username = 'Username not found'
+    return new Response(JSON.stringify(resBody))
   }
 
   // If the hashed password doesnt match db result, password is wrong
-  if (!await Bun.password.verify(password + hashedPassword.salt, hashedPassword.password)) {
-    resData.errors.password = 'Password is incorrect'
-    return new Response(JSON.stringify(resData))
+  if (!await Bun.password.verify(password + dbResult.salt, dbResult.password)) {
+    resBody.errors.password = 'Password is incorrect'
+    return new Response(JSON.stringify(resBody))
   }
   
   // If the function makes it to this point, the user has been successfully authenticated
@@ -55,7 +54,7 @@ export async function POST(req: Request) {
       })
   }
 
-  return new Response(JSON.stringify(resData), {
+  return new Response(JSON.stringify(resBody), {
       headers: {
         'Set-Cookie': `sessionToken=${token}; Expires=${expiresAt}; Path=/; SameSite=Strict; HttpOnly; Secure;`,
       }

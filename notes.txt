@@ -1,9 +1,0 @@
-Google foo bar is really hard and taking up most of my time these last few weeks
-
-And yet another day was entirely wasted on google foobar
-
-Once again, another day lost to google foobar, but at least it can pass tests 1-4 and 6-10 now
-
-It finally passes all the tests, woot
-
-Finished level 3 of google foobar, time to actually start working on this project

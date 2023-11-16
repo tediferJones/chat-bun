@@ -16,11 +16,6 @@ interface BackendServerObj extends Server {
 
 interface BackendServers {
   [key: string]: BackendServerObj
-  ////: 
-  // [key: string]: {
-  //   server: Server,
-  //   clients: ServerWebSocket<{ username: string, color: string }>[],
-  // }
 }
 
 type UserAuth = undefined | {
