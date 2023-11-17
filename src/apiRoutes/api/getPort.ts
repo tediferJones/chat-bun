@@ -39,8 +39,10 @@ export async function POST(req: Request, servers: BackendServers) {
 
   const newServer = Bun.serve<{ username: string, color: string }>({
     port: resBody.port,
+    development: false,
     fetch: (req, server) => {
       // Validate the user on initial request
+      console.log('RECIEVED NEW WEBSOCKET REQUEST')
       const user = verifyUser(req);
       if (!user) return new Response(JSON.stringify('YOU ARE NOT LOGGED IN'))
       if (server.upgrade(req, { data: { 
@@ -51,6 +53,7 @@ export async function POST(req: Request, servers: BackendServers) {
     },
     websocket: {
       message(ws, message) {
+        console.log('sending message to clients')
         const newMessage = JSON.stringify({
           username: ws.data.username,
           color: ws.data.color,
@@ -62,6 +65,7 @@ export async function POST(req: Request, servers: BackendServers) {
         }
       },
       open(ws) {
+        console.log('send connecting message')
         servers[servername].clients[ws.data.username] = ws;
         const newMessage = JSON.stringify({
           username: ws.data.username,
@@ -95,6 +99,8 @@ export async function POST(req: Request, servers: BackendServers) {
   }) as BackendServerObj
   newServer.clients = {};
   servers[servername] = newServer;
+  console.log(servers)
+  // console.log(process.env)
 
   return new Response(JSON.stringify(resBody));
 }

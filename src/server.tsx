@@ -58,6 +58,7 @@ const servers: BackendServers = {};
 // Run server to serve HTML to user
 const server = Bun.serve({
   port: process.env.PORT || 3000,
+  development: process.env.PORT ? false : true,
   async fetch(req) {
     // console.log(req.method + ', ' + new URL(req.url).pathname)
     const pageMatch = pageRouter.match(req);

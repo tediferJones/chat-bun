@@ -47,9 +47,13 @@ export default function NewConnection({
 
       // Set up new web socket connection
       const url = new URL(res.url)
-      const ws = new WebSocket(`${url.protocol === 'http:' ? 'ws' : 'wss'}://${url.hostname}:${port}`) as ServerObj;
+      // const ws = new WebSocket(`${url.protocol === 'http:' ? 'ws' : 'wss'}://${url.hostname}:${port}`) as ServerObj;
+      const ws = new WebSocket(`ws://${url.hostname}:${port}`) as ServerObj;
+      console.log(ws)
       ws.servername = servername;
       ws.chatHistory = [];
+      // TESTING
+      // ws.onerror = (error) => console.log(error);
       ws.onclose = () => {
         delete servers[ws.servername];
         setToggle((oldToggle: boolean) => !oldToggle);
