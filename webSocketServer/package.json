@@ -11,10 +11,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bun": "^1.0.12"
+    "@libsql/client": "^0.4.0-pre.1",
+    "bun": "^1.0.12",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.0"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "drizzle-kit": "^0.20.4"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

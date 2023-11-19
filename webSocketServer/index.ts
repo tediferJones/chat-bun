@@ -1,4 +1,55 @@
+// import { drizzle } from 'drizzle-orm/libsql';
+// import { createClient } from '@libsql/client';
+// import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { users } from './db/schema';
+import { db } from './db/db';
 // console.log("Hello via Bun! TEST");
+//
+// WHAT THE FUCKING FUCK IT ACTUALLY WORKS
+// Now we all have to do is redesign pretty much fucking everything aside from the style of the UI
+// If we can get a planetscale database connected to this project we should be good to go
+// console.log(process.env)
+
+// JUST USE CHAT-LAYERS
+
+// function database() {
+//   if (process.env.TURSO_URL && process.env.TURSO_AUTH_TOKEN)
+// }
+
+// let db;
+// if (!process.env.TURSO_URL || !process.env.TURSO_AUTH_TOKEN) {
+//   console.log('BORKED')
+//   throw Error('Cant find env variables')
+// }
+// const client = createClient({
+//   url: process.env.TURSO_URL,
+//   authToken: process.env.TURSO_AUTH_TOKEN,
+// })
+// const db = drizzle(client);
+// This works but only because we manually created the table in the sqlite shell, and made sure db/schema.ts matched its schema
+// There must be some way to create the table if it doesnt exist from within javascript and/or the schema file
+// We need to "generate" and "push" a "migration"
+
+// WORKING
+// await db.insert(users).values({
+//   username: 'test1',
+//   password: 'test1'
+// })
+
+// await db.insert(users).values({
+//   username: 'testUsername',
+//   password: 'testPassword',
+//   salt: 'testSalt',
+// })
+
+// db.run(users)
+console.log(await db.select().from(users).all())
+
+// const newTable = sqliteTable('users', {
+//   textCol: text('someText')
+// })
+// 
+// db.select().from(users);
 
 // const webSocketServer = Bun.serve<{ username: string, color: string }>({
 const webSocketServer = Bun.serve({
